@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lnworks.atchar.etcmng.mapper.Comcode">
+
+    <select id="getSidoList" parameterType="com.lnworks.atchar.etcmng.domain.ZipCordVO" resultType="com.lnworks.atchar.etcmng.domain.ZipCordVO">
+        <![CDATA[
+        /* Comcode.getDataList */
+        SELECT si
+        FROM zipcode1
+        GROUP BY si
+        ]]>
+    </select>
+
+    <select id="getGugunList" parameterType="com.lnworks.atchar.etcmng.domain.ZipCordVO" resultType="com.lnworks.atchar.etcmng.domain.ZipCordVO">
+        <![CDATA[
+        /* Comcode.getDataList */
+        SELECT gu
+        FROM zipcode1
+        WHERE 1 = 1
+        ]]>
+        <if test='si != null and !si.equals("")'>
+            AND si = #{si}
+        </if>
+    </select>
+
+    <select id="getDataList" parameterType="com.lnworks.atchar.etcmng.domain.ComcodeVO" resultType="com.lnworks.atchar.etcmng.domain.ComcodeVO">
+        <![CDATA[
+        /* Comcode.getDataList */
+        SELECT
+             comcd
+            ,mstcd
+            ,comnm
+            ,odno
+            ,useyn
+        FROM tb_comcode
+        WHERE 1 = 1
+        ]]>
+        <if test='s_mstCd != null and !s_mstCd.equals("")'>
+            AND mstcd = #{s_mstCd}
+        </if>
+        <if test='s_comNm != null and !s_comNm.equals("")'>
+            AND comnm LIKE CONCAT('%', #{s_comNm}, '%')
+        </if>
+        <if test='s_comCd != null and !s_comCd.equals("")'>
+            AND comnm = #{s_comCd}
+        </if>
+        <if test='s_useYn != null and !s_useYn.equals("")'>
+            AND useyn = #{s_useYn}
+        </if>
+        ORDER BY odno ASC
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <insert id="insData" parameterType="com.lnworks.atchar.etcmng.domain.ComcodeVO">
+        <![CDATA[
+        /* Comcode.insData */
+        INSERT INTO tb_comcode
+        (
+            comcd
+            ,mstcd
+            ,comnm
+            ,odno
+            ,useyn
+        )
+        VALUES
+            (
+                #{comCd}
+                ,#{mstCd}
+                ,#{comNm}
+                ,#{odNo}
+                ,#{useYn}
+            )
+            ON DUPLICATE KEY
+        UPDATE
+            mstcd = #{mstCd}
+            ,comnm = #{comNm}
+            ,odno  = #{odNo}
+            ,useyn = #{useYn}
+        ]]>
+    </insert>
+
+    <delete id="delData" parameterType="com.lnworks.atchar.etcmng.domain.ComcodeVO">
+        <![CDATA[
+        /* Comcode.delData */
+        DELETE FROM tb_comcode
+        WHERE comcd = #{comCd}
+        ]]>
+    </delete>
+
+</mapper>

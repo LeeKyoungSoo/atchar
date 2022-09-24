@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/defaultLayout">
+
+
+<body id="page-top">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+        <!-- 코드목록 Start -->
+        <div class="card shadow mb-4">
+            <form id="dataFrm" name="dataFrm" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <!-- title Start -->
+                        <div style="float: left;margin-top:-8px">
+
+                        </div>
+                        <!-- title End -->
+                    </h6>
+                </div>
+
+                <!-- Search Start -->
+                <div class="card-body">
+                    메인페이지 <br>
+
+                    1. 최근 회원가입현황 - <br>
+                    2. 최근 상품현황<br>
+                    3. 최근 판매현황<br>
+
+                    <br>
+                    통계를 통해 APP의 현황을 볼 수 있도록 함
+                </div>
+                <!-- Search End -->
+
+                <!-- List Start -->
+                <div class="card-body">
+
+                </div>
+                <!-- List End -->
+
+
+
+            </form>
+        </div>
+        <!-- 코드목록 end -->
+    </div>
+
+    <script th:src="@{/js/com/util.js}" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+
+
+
+</th:block>
+</body>
+</html>

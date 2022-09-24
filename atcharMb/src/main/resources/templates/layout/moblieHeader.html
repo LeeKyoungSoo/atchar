@@ -1,0 +1,163 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, minimum-scale=1.0, user-scalable=yes, target-densitydpi=medium-dpi" >
+
+<link  th:href="@{/onsen_ui/css/onsenui.css}" rel="stylesheet">
+<link  th:href="@{/onsen_ui/css/onsen-css-components.min.css}" rel="stylesheet">
+
+<link th:href="@{/vendor/jquery-modal/css/jquery.modal.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/vendor/jquery-modal/css/jquery.modal.theme-xenon.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/vendor/jquery-modal/css/jquery.modal.theme-atlant.css}" type="text/css" rel="stylesheet" />
+
+<script th:src="@{/vendor/jquery/jquery.js}" ></script>
+<script th:src="@{/onsen_ui/js/onsenui.min.js}" ></script>
+<script th:src="@{/vendor/jquery-modal/js/jquery.modal.js}"></script>
+
+<style type="text/css">
+    .selbox {
+        width: 90%;
+        height:28px;
+        background-color: #f5f5f5;
+        border-radius: 3px;
+        border : 1px solid #cacaca;
+    }
+
+    .selbox_btn {
+        width: 90%;
+        height:40px;
+    }
+
+    .selbox_100 {
+        width: 100%;
+        height:28px;
+    }
+
+    .selbox_50 {
+        width: 50%;
+        height:28px;
+    }
+
+    .btn_magin {
+        margin-top: 10px;
+    }
+
+    .sub_title_margin {
+        margin-top: 4px;
+    }
+
+    .sub_cont_margin {
+        margin-top: 2px;
+    }
+
+     .red {
+        color: red;
+     }
+
+    .gray {
+        color: darkgray;
+    }
+
+    .ulist { list-style: none;  padding:0; margin:0;}
+    .ulist_w_33 { display : inline-block; list-style: none; width:100px; height:100px; float:left;  padding:8px; margin:0;}
+
+    .card_op {
+        margin-top: 38px;
+        height : 94%;
+        max-height: 820px;
+        overflow-y: auto;
+    }
+
+    .item_list_img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .item_list_left {
+        padding-left: 14px;
+    }
+
+    .page__background {
+        background-color: #ffffff;
+    }
+
+    .sel_design {
+        background-color: #f5f5f5;
+        border-radius: 3px;
+        border : 1px solid #cacaca;
+    }
+
+    .info_pd {
+        padding:  4px 8px 4px 8px;
+    }
+
+    input[type="button"]:checked + tabbar--material__button {
+        color: #4cbb77;
+    }
+
+    .empty_hi { height: 300px; }
+</style>
+<style>
+    .bigPictureWrapper {
+        position: absolute;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        top:0%;
+        width:100%;
+        height:100%;
+        background-color: gray;
+        z-index: 100;
+        background:rgba(255,255,255,0.5);
+        touch-action: manipulation;
+    }
+
+    .bigPicture {
+        position: relative;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        overflow: scroll;
+        touch-action: auto;
+    }
+
+    .bigPicture img {
+        max-height: 100%;
+        height: auto;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function (e){
+        $(document).on("click", "img" ,function(){
+            //debugger;
+            if ( $(this).attr('class') == "itemImg" ) {
+                //showImage($(this).attr('src'));
+
+                //안드로이드 앱 스크립트
+                android.imageBicView($(this).attr('src'));
+            }
+        }); //end click event
+
+        function showImage(fileCallPath){
+            $(".bigPictureWrapper").css("display","flex").show();
+
+            $(".bigPicture")
+                .html("<img src='"+fileCallPath+"' >")
+                .animate({width:'100%', height: '100%'}, 1000);
+            $('body').css('touch-action', 'manipulation');
+        }//end fileCallPath
+
+        $(".bigPictureWrapper").on("click", function(e){
+            $(".bigPicture").animate({width:'0%', height: '0%'}, 1000);
+                setTimeout(function(){
+                $('.bigPictureWrapper').hide();
+            }, 1000);
+            $('body').css('touch-action', 'pan-y');
+        });//end bigWrapperClick event
+    });
+</script>
+<div class='bigPictureWrapper'>
+    <div class='bigPicture'>
+    </div>
+</div>
+
+<form id="logout" name="logout" method="post">
+</form>

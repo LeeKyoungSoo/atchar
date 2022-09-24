@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/defaultLayoutNoFooter">
+
+<head>
+    <title>WELCOME</title>
+</head>
+
+<body class="bg-gradient-primary">
+
+<th:block layout:fragment="content">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div style="color: #ffffff;font-size: 24px;margin-top: 100px;text-align: center">
+                <div>
+                    해당 시스템은 앗차 관리시스템으로 인가된 사용자만 사용할 수 있습니다.
+                </div>
+                <div>
+                    <a th:href="@{/admin/member/main}" class="link-button"><span style="color: #ffffff;">Go to Home Page</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+
+</body>
+</html>

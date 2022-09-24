@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lnworks.atchar.etcmng.mapper.BbsBoard">
+
+    <resultMap id="BbsDataMap" type="com.lnworks.atchar.etcmng.domain.BoardVO">
+        <result property="bId" column="bId"/>
+        <collection property="fileList" column="{bId=bId}"
+                    ofType="com.lnworks.atchar.etcmng.domain.BoardFileVO"
+                    select="getFileList" />
+    </resultMap>
+
+    <insert id="insBbsData" parameterType="com.lnworks.atchar.etcmng.domain.BoardVO">
+        <![CDATA[
+        /* BbsBoard.insBbsData */
+        INSERT INTO tb_bbs_board
+        (
+             bid
+            ,gubun
+            ,subject
+            ,cont
+            ,regid
+            ,regnm
+            ,notiyn
+            ,todt
+            ,fromdt
+            ,placenm
+        )
+        VALUES
+        (
+             #{bId}
+            ,#{gubun}
+            ,#{subject}
+            ,#{cont}
+            ,#{regId}
+            ,#{regNm}
+            ,#{notiYn}
+            ,#{toDt}
+            ,#{fromDt}
+            ,#{placeNm}
+        )
+        ]]>
+    </insert>
+
+    <update id="uptBbsData" parameterType="com.lnworks.atchar.etcmng.domain.BoardVO">
+        <![CDATA[
+        /* BbsBoard.uptBbsData */
+        UPDATE tb_bbs_board
+        SET  subject = #{subject}
+            ,cont = #{cont}
+            ,notiyn = #{notiYn}
+            ,moddt = now()
+            ,todt = #{toDt}
+            ,fromdt = #{fromDt}
+            ,placenm = #{placeNm}
+        WHERE bid = #{bId}
+        ]]>
+    </update>
+
+    <update id="uptBbsDataHitUp" parameterType="com.lnworks.atchar.etcmng.domain.BoardVO">
+        <![CDATA[
+        /* BbsBoard.uptBbsDataHitUp */
+        UPDATE tb_bbs_board
+        SET  hit = hit + 1
+        WHERE bid = #{bId}
+        ]]>
+    </update>
+
+    <delete id="delBbsData" parameterType="com.lnworks.atchar.etcmng.domain.BoardVO">
+        <![CDATA[
+        /* BbsBoard.delBbsData */
+        DELETE FROM tb_bbs_board
+        WHERE bid = #{bId}
+        ]]>
+    </delete>
+
+    <select id="getBbsDataView" parameterType="com.lnworks.atchar.etcmng.domain.BoardVO" resultMap="BbsDataMap">
+     <![CDATA[
+        /* BbsBoard.getBbsDataView */
+        SELECT
+             gubun
+            ,subject
+            ,cont
+            ,regid
+            ,regnm
+            ,notiyn
+            ,DATE_FORMAT(regDt, '%Y-%m-%d') AS regDt
+            ,hit
+            ,bid
+            ,todt
+            ,fromdt
+            ,placenm
+        FROM tb_bbs_board
+        WHERE bid = #{bId}
+        ]]>
+    </select>
+
+    <select id="getBbsDataCnt" parameterType="com.lnworks.atchar.etcmng.domain.BoardVO" resultType="int">
+        <![CDATA[
+        /* BbsBoard.getBbsDataCnt */
+        SELECT count(*) as cnt
+        FROM tb_bbs_board
+        WHERE 1 = 1
+        ]]>
+        <if test='gubun != null and !gubun.equals("")'>
+            AND gubun = #{gubun}
+        </if>
+        <if test='sSubject != null and !sSubject.equals("")'>
+            AND subject LIKE CONCAT('%', #{sSubject}, '%')
+        </if>
+        <if test='(sRegDt != null and !sRegDt.equals("")) and (eRegDt != null and !eRegDt.equals(""))'>
+            AND DATE_FORMAT(regDt, '%Y%m%d')
+            BETWEEN DATE_FORMAT(IFNULL(NULLIF(#{sRegDt},''),'00000000'), '%Y%m%d')
+                AND DATE_FORMAT(IFNULL(NULLIF(#{eRegDt},''),'99991231'), '%Y%m%d')
+        </if>
+    </select>
+
+    <select id="getBbsDataList" parameterType="com.lnworks.atchar.etcmng.domain.BoardVO" resultMap="BbsDataMap">
+        <![CDATA[
+        /* BbsBoard.getBbsDataList */
+        SELECT
+            bId
+            ,gubun
+            ,subject
+            ,cont
+            ,regId
+            ,regNm
+            ,DATE_FORMAT(regDt, '%Y-%m-%d') AS regDt
+            ,modDt
+            ,hit
+            ,notiYn
+            ,todt
+            ,fromdt
+            ,placenm
+        FROM tb_bbs_board
+        WHERE 1 = 1
+        ]]>
+        <if test='gubun != null and !gubun.equals("")'>
+            AND gubun = #{gubun}
+        </if>
+        <if test='sSubject != null and !sSubject.equals("")'>
+            AND subject LIKE CONCAT('%', #{sSubject}, '%')
+        </if>
+        <if test='(sRegDt != null and !sRegDt.equals("")) and (eRegDt != null and !eRegDt.equals(""))'>
+            AND DATE_FORMAT(regDt, '%Y%m%d')
+                BETWEEN DATE_FORMAT(IFNULL(NULLIF(#{sRegDt},''),'00000000'), '%Y%m%d')
+                    AND DATE_FORMAT(IFNULL(NULLIF(#{eRegDt},''),'99991231'), '%Y%m%d')
+        </if>
+        ORDER BY notiYn DESC, regDt DESC
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <insert id="intFileData" parameterType="com.lnworks.atchar.etcmng.domain.BoardFileVO">
+        <![CDATA[
+        /* BbsBoard.intFileData */
+        INSERT INTO tb_bbs_file
+        (
+             bId
+            ,fileOrgNm
+            ,fileSaveNm
+            ,fileSize
+        )
+        VALUES
+        (
+             #{bId}
+            ,#{fileOrgNm}
+            ,#{fileSaveNm}
+            ,#{fileSize}
+        )
+        ]]>
+    </insert>
+
+    <delete id="delFileData" parameterType="com.lnworks.atchar.etcmng.domain.BoardFileVO">
+         <![CDATA[
+        /* BbsBoard.delFileData */
+        DELETE FROM tb_bbs_file
+        WHERE fId = #{fId}
+        ]]>
+    </delete>
+
+    <select id="getFileData" parameterType="com.lnworks.atchar.etcmng.domain.BoardFileVO" resultType="com.lnworks.atchar.etcmng.domain.BoardFileVO">
+        <![CDATA[
+        /* BbsBoard.getFileList */
+        SELECT
+            fId
+             ,bId
+             ,fileOrgNm
+             ,fileSaveNm
+             ,fileSize
+             ,DATE_FORMAT(regDt, '%Y-%m-%d') AS regDt
+        FROM tb_bbs_file
+        WHERE fId = #{FId}
+        ]]>
+    </select>
+
+    <select id="getFileList" parameterType="map" resultType="com.lnworks.atchar.etcmng.domain.BoardFileVO">
+        <![CDATA[
+        /* BbsBoard.getFileList */
+        SELECT
+            fId
+            ,bId
+            ,fileOrgNm
+            ,fileSaveNm
+            ,fileSize
+            ,DATE_FORMAT(regDt, '%Y-%m-%d') AS regDt
+        FROM tb_bbs_file
+        WHERE bId = #{bId}
+        ORDER BY fid DESC
+        ]]>
+    </select>
+
+    <select id="getFileDataList" parameterType="com.lnworks.atchar.etcmng.domain.BoardFileVO" resultType="com.lnworks.atchar.etcmng.domain.BoardFileVO">
+        <![CDATA[
+        /* BbsBoard.getFileList */
+        SELECT
+            fId
+             ,bId
+             ,fileOrgNm
+             ,fileSaveNm
+             ,fileSize
+             ,DATE_FORMAT(regDt, '%Y-%m-%d') AS regDt
+        FROM tb_bbs_file
+        WHERE bId = #{bId}
+        ORDER BY fid DESC
+        ]]>
+    </select>
+</mapper>

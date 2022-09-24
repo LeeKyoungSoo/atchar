@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lnworks.atchar.etcmng.mapper.Member">
+    <select id="getDataList" parameterType="com.lnworks.atchar.etcmng.domain.MemberVO" resultType="com.lnworks.atchar.etcmng.domain.MemberVO">
+        <![CDATA[
+        /* Member.getDataList */
+        SELECT
+             userid
+            ,pwd
+            ,usernm
+            ,level
+            ,useyn
+            ,phone
+            ,email
+            ,regroot
+            ,memo
+        FROM tb_member
+        WHERE 1 = 1
+        ]]>
+        <if test='s_userId != null and !s_userId.equals("")'>
+            AND userid = #{s_userId}
+        </if>
+        <if test='s_userNm != null and !s_userNm.equals("")'>
+            AND usernm LIKE CONCAT('%', #{s_userNm}, '%')
+        </if>
+        <if test='s_level != null and !s_level.equals("")'>
+            AND level = #{s_level}
+        </if>
+        <if test='s_useYn != null and !s_useYn.equals("")'>
+            AND useyn = #{s_useYn}
+        </if>
+        ORDER BY usernm
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <insert id="insData" parameterType="com.lnworks.atchar.etcmng.domain.MemberVO">
+        <![CDATA[
+        /* Member.insData */
+        INSERT INTO tb_member
+        (
+            userid
+            ,pwd
+            ,usernm
+            ,level
+            ,useyn
+            ,phone
+            ,email
+            ,regroot
+            ,memo
+        )
+        VALUES
+            (
+                #{userId}
+                ,#{pwd}
+                ,#{userNm}
+                ,#{level}
+                ,#{useYn}
+                ,#{phone}
+                ,#{email}
+                ,#{regroot}
+                ,#{memo}
+            )
+            ON DUPLICATE KEY
+        UPDATE
+            pwd = #{pwd}
+            ,userNm  = #{userNm}
+            ,level  = #{level}
+            ,useyn = #{useYn}
+            ,phone = #{phone}
+            ,email = #{email}
+            ,regroot = #{regroot}
+            ,memo = #{memo}
+        ]]>
+    </insert>
+
+    <delete id="delData" parameterType="com.lnworks.atchar.etcmng.domain.MemberVO">
+        <![CDATA[
+        /* Member.delData */
+        DELETE FROM tb_member
+        WHERE userid = #{userId}
+        ]]>
+    </delete>
+
+</mapper>

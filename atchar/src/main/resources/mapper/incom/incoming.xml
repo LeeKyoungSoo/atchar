@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lnworks.atchar.incom.mapper.Incoming">
+    <select id="getDataList" parameterType="com.lnworks.atchar.incom.domain.IncomingVO" resultType="com.lnworks.atchar.incom.domain.IncomingVO">
+        <![CDATA[
+        /* Incoming.getDataList */
+        SELECT
+             incomcd
+            ,itemnm
+            ,itemcd
+            ,makenm
+            ,makecd
+            ,carnm
+            ,carcd
+            ,modelnm
+            ,modelcd
+            ,yearnm
+            ,yearcd
+            ,areasinm
+            ,areasicd
+            ,areagunm
+            ,areagucd
+            ,price
+            ,partnum
+            ,vinnum
+            ,memo
+            ,mountyn
+            ,coloryn
+            ,regid
+            ,regdt
+            ,modid
+            ,moddt
+            ,mdopenyn
+        FROM tb_incoming
+        WHERE 1 = 1
+        ]]>
+        <if test='s_itemnm != null and !s_itemnm.equals("")'>
+            AND itemnm LIKE CONCAT('%', #{s_itemnm}, '%')
+        </if>
+        <if test='(stdt != null and !stdt.equals("")) and (endt != null and !endt.equals(""))'>
+            AND DATE_FORMAT(regdt, '%Y%m%d')
+            BETWEEN DATE_FORMAT(IFNULL(NULLIF(#{stdt},''),'00000000'), '%Y%m%d')
+            AND DATE_FORMAT(IFNULL(NULLIF(#{endt},''),'99991231'), '%Y%m%d')
+        </if>
+        ORDER BY regdt DESC, incomcd DESC, itemnm ASC
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <insert id="insData" parameterType="com.lnworks.atchar.incom.domain.IncomingVO">
+        <![CDATA[
+        /* Incoming.insData */
+        INSERT INTO tb_incoming
+        (
+             incomcd
+            ,itemnm
+            ,itemcd
+            ,makenm
+            ,makecd
+            ,carnm
+            ,carcd
+            ,modelnm
+            ,modelcd
+            ,yearnm
+            ,yearcd
+            ,areasinm
+            ,areasicd
+            ,areagunm
+            ,areagucd
+            ,price
+            ,partnum
+            ,vinnum
+            ,memo
+            ,mountyn
+            ,coloryn
+            ,regid
+            ,regdt
+            ,modid
+            ,moddt
+            ,mdopenyn
+        )
+        VALUES
+            (
+             #{incomcd}
+            ,#{itemnm}
+            ,#{itemcd}
+            ,#{makenm}
+            ,#{makecd}
+            ,#{carnm}
+            ,#{carcd}
+            ,#{modelnm}
+            ,#{modelcd}
+            ,#{yearnm}
+            ,#{yearcd}
+            ,#{areasinm}
+            ,#{areasicd}
+            ,#{areagunm}
+            ,#{areagucd}
+            ,#{price}
+            ,#{partnum}
+            ,#{vinnum}
+            ,#{memo}
+            ,#{mountyn}
+            ,#{coloryn}
+            ,#{regid}
+            ,now()
+            ,#{modid}
+            ,now()
+            ,#{mdopenyn}
+            )
+            ON DUPLICATE KEY
+        UPDATE
+            itemnm = #{itemnm}
+            ,itemcd = #{itemcd}
+            ,makenm = #{makenm}
+            ,makecd = #{makecd}
+            ,carnm = #{carnm}
+            ,carcd = #{carcd}
+            ,modelnm = #{modelnm}
+            ,modelcd = #{modelcd}
+            ,yearnm = #{yearnm}
+            ,yearcd = #{yearcd}
+            ,areasinm = #{areasinm}
+            ,areasicd = #{areasicd}
+            ,areagunm = #{areagunm}
+            ,areagucd = #{areagucd}
+            ,price = #{price}
+            ,partnum = #{partnum}
+            ,vinnum = #{vinnum}
+            ,memo = #{memo}
+            ,mountyn = #{mountyn}
+            ,coloryn = #{coloryn}
+            ,modid = #{modid}
+            ,moddt = now()
+            ,mdopenyn = #{mdopenyn}
+        ]]>
+    </insert>
+
+    <delete id="delData" parameterType="com.lnworks.atchar.incom.domain.IncomingVO">
+        <![CDATA[
+        /* Incoming.delData */
+        DELETE FROM tb_incoming
+        WHERE incomcd = #{incomcd}
+        ]]>
+    </delete>
+
+</mapper>

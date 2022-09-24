@@ -1,0 +1,364 @@
+
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mobileLayout">
+
+<head>
+    <title>WELCOME</title>
+</head>
+
+<body>
+
+<th:block layout:fragment="content">
+
+    <ons-splitter>
+        <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+            <ons-page>
+                <ons-list>
+                    <ons-list-item onclick="fn.pageurl('/mobile/guest/main')" tappable>
+                        Home
+                    </ons-list-item>
+                    <ons-list-item onclick="fn.pageurl('/mobile/guest/main?active=info')" tappable>
+                        앗차란?
+                    </ons-list-item>
+                    <ons-list-item onclick="fn.pageurl('/mobile/member/item')" tappable>
+                         바디품목검색
+                    </ons-list-item>
+                    <ons-list-item onclick="fn.pageurl('/mobile/member/etcitem')" tappable>
+                        기타품목검색
+                    </ons-list-item>
+                    <th:block th:if="${session['userLv']} == null ">
+                        <ons-list-item onclick="fn.pageurl('/mobile/member/manage')" tappable>
+                            바디품목등록
+                        </ons-list-item>
+                        <ons-list-item onclick="fn.pageurl('/mobile/member/eb_manage')" tappable>
+                            기타품목등록
+                        </ons-list-item>
+                    </th:block>
+                    <th:block th:if="${session['userLv']} == 1 ">
+                        <ons-list-item onclick="fn.userLvUpInfo()" tappable>
+                            바디품목등록
+                        </ons-list-item>
+                        <ons-list-item onclick="fn.userLvUpInfo()" tappable>
+                            기타품목등록
+                        </ons-list-item>
+                    </th:block>
+                    <th:block th:if="${session['userLv']} == 2 ">
+                        <ons-list-item onclick="fn.pageurl('/mobile/member/manage')" tappable>
+                            바디품목등록
+                        </ons-list-item>
+                        <ons-list-item onclick="fn.pageurl('/mobile/member/eb_manage')" tappable>
+                            기타품목등록
+                        </ons-list-item>
+                    </th:block>
+                </ons-list>
+            </ons-page>
+        </ons-splitter-side>
+        <ons-splitter-content id="content" page="item"></ons-splitter-content>
+    </ons-splitter>
+
+    <template id="item">
+        <ons-page>
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center">
+                    로그인
+                </div>
+            </ons-toolbar>
+            <div style="margin-top:-14px;width:100%;height:100%;">
+                <ons-tabbar swipeable position="auto">
+                    <th:block th:if="${param.active != null}">
+                        <ons-tab page="tab1.html" label="로그인" icon="md-lock" active-icon="md-car" >
+                        </ons-tab>
+                        <ons-tab page="tab2.html" label="회원등록" icon="md-account" active-icon="md-car" active>
+                        </ons-tab>
+                    </th:block>
+                    <th:block th:unless="${param.active != null}">
+                        <ons-tab page="tab1.html" label="로그인" icon="md-lock" active-icon="md-car" active>
+                        </ons-tab>
+                        <ons-tab page="tab2.html" label="회원등록" icon="md-account" active-icon="md-car">
+                        </ons-tab>
+                    </th:block>
+                </ons-tabbar>
+
+                <template id="tab1.html">
+                    <ons-page>
+                        <div style="text-align: center; margin-top: 30px;">
+                        <form id="loginFrm" method="post" class="user">
+                            <div id="login_info">
+                                [안내]<br>
+                                회원가입하시 상품 검색 이용이 가능합니다. <br>
+                                상품등록 권한을 원하시면, 회원가입 후 추가 가입항목을
+                                입력해 주십시오.
+                            </div>
+                            <p>
+                                <ons-input id="username" name="username" modifier="underbar" placeholder="아이디(email주소)" float></ons-input>
+                            </p>
+                            <p>
+                                <ons-input id="password" name="password" modifier="underbar" type="password" placeholder="비밀번호" float></ons-input>
+                            </p>
+                            <p>
+                                <input type="checkbox" id="remember-me" name="remember-me"
+                                    style="width:20px;height:20px"> 자동 로그인
+                            </p>
+
+                            <p style="margin-top: 30px;">
+                                <ons-button class="selbox_btn" onclick="login()">로그인</ons-button>
+                            </p>
+                        </form>
+                        </div>
+                        <div class="empty_hi"></div>
+                        <div th:if="${param.error != null}">
+                            <script>
+                                modal({
+                                    type: 'error',
+                                    title: '앗차 로그인',
+                                    text: '로그인 계정을 다시 확인해 주십시오.'
+                                });
+                            </script>
+                        </div>
+                    </ons-page>
+                </template>
+
+                <template id="tab2.html">
+                    <ons-page id="Tab2">
+                        <div style="text-align: center; margin-top: 30px;">
+                            <form id="dataFrm" name="dataFrm" method="post">
+                                <input type="hidden" id="level" name="level" value="1">
+                                <input type="hidden" id="useYn" name="useYn" value="Y">
+                                <input type="hidden" id="idchk" name="idchk" value="">
+
+                                <input type="hidden" id="prvacc" name="prvacc" value="N">
+                                <input type="hidden" id="yacacc" name="yacacc" value="N">
+                                <input type="hidden" id="useacc" name="useacc" value="N">
+
+                                <input type="hidden" id="exkey" name="exkey" />
+
+                                <div id="regist_info">
+                                    [안내]<br>
+                                    회원가입하시 상품 검색 이용이 가능합니다. <br>
+                                    상품등록 권한을 원하시면, 회원가입 후 추가 가입항목을
+                                    입력해 주십시오.
+                                </div>
+                                <p>
+                                    <ons-input id="userId" name="userId" modifier="underbar" placeholder="아이디(email주소)" float></ons-input>
+                                </p>
+                                <p style="margin-top: 4px;">
+                                    <ons-button class="" onclick="Member.idUseChk()">아이디중복확인</ons-button>
+                                </p>
+                                <p>
+                                    <ons-input id="pwd" name="pwd" modifier="underbar" type="password" placeholder="비밀번호" float></ons-input>
+                                </p>
+                                <p>
+                                    <ons-input id="newPwd" name="newPwd" modifier="underbar" type="password" placeholder="비밀번호 확인" float></ons-input>
+                                </p>
+                                <p>
+                                    <ons-input id="userNm" name="userNm" modifier="underbar" placeholder="사용자명" float></ons-input>
+                                </p>
+                                <p>
+                                    <ons-input id="phone" name="phone" modifier="underbar" placeholder="연락처" float></ons-input>
+                                </p>
+                                <p style="margin-top: 4px;">
+                                    <ons-button class="" onclick="Member.smsAuthKey()">인증번호</ons-button>
+                                </p>
+                                <p>
+                                    <ons-input id="smsauth" name="smsauth" modifier="underbar" placeholder="인증번호" float></ons-input>
+                                </p>
+                                <p>
+                                    <ons-input id="email" name="email" modifier="underbar" placeholder="email주소" float></ons-input>
+                                </p>
+
+                                <div style="width: 100%;text-align: center">
+                                    <div style="display:inline-block;width: 90%">
+                                        <div style="float: left;"><span>개인정보노출동의</span></div>
+                                        <div style="float: right;"><ons-switch input-id="prvaccyn" onchange="prvaccChg();"></ons-switch></div>
+                                    </div>
+                                </div>
+
+                                <div style="width: 100%;text-align: center">
+                                    <div style="display:inline-block;width: 90%">
+                                        <div style="float: left;" onclick="yacView();"><span>약관동의</span>[보기]</div>
+                                        <div style="float: right;"><ons-switch input-id="yacaccyn" onchange="yacaccChg();"></ons-switch></div>
+                                    </div>
+                                </div>
+
+                                <div style="width: 100%;text-align: center">
+                                    <div style="display:inline-block;width: 90%">
+                                        <div style="float: left;" onclick="useaccView();"><span>개인정보 수집 및 이용동의</span>[보기]</div>
+                                        <div style="float: right;"><ons-switch input-id="useaccyn" onchange="useaccChg();"></ons-switch></div>
+                                    </div>
+                                </div>
+
+                                <p style="margin-top: 30px;">
+                                    <ons-button class="selbox_btn" onclick="memberRegist()">화원등록</ons-button>
+                                </p>
+                            </form>
+                        </div>
+                        <div class="empty_hi"></div>
+                        <div class="empty_hi"></div>
+                    </ons-page>
+                </template>
+
+            </div>
+        </ons-page>
+    </template>
+
+    <ons-page id="Tab2-VIEW">
+    </ons-page>
+
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/mobile/guest/regist.js}" type="text/javascript"></script>
+    <script th:src="@{/js/page/etcmng/member.js}" type="text/javascript"></script>
+    <script th:src="@{/js/page/common.js}" type="text/javascript"></script>
+    <script>
+        window.fn = {};
+
+        window.fn.open = function() {
+            var menu = document.getElementById('menu');
+            menu.open();
+        };
+
+        window.fn.load = function(page) {
+            var content = document.getElementById('content');
+            var menu = document.getElementById('menu');
+            content.load(page)
+                .then(menu.close.bind(menu));
+        };
+
+        window.fn.pageurl = function(url) {
+            window.location.href = url;
+        };
+
+        window.fn.userLvUpInfo = function() {
+            modal({
+                type: 'confirm',
+                title: '권한신청',
+                text: '상품등록권한이 필요합니다. 권한신청 페이지로 이동하시겠습니까?',
+                callback: function (result) {
+                    if ( result == true) {
+                        fn.pageurl('/mobile/member/item?active=three');
+                    }
+                }
+            })
+        }
+    </script>
+    <script>
+        document.addEventListener('prechange', function(event) {
+            document.querySelector('ons-toolbar .center')
+                .innerHTML = event.tabItem.getAttribute('label');
+
+            if ( event.index == 0 ) {
+                Common.goBoardView('001220315234525' ,'login_info');     //로그인안내
+            } else if ( event.index == 1 ) {
+                Common.goBoardView('001220315234302' ,'regist_info');      //회원가입안내
+            }
+        });
+
+        login = function() {
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+
+            if (username === '' && password === '') {
+                ons.notification.alert('사용자 계정을 입력해 주십시오. 로그인이 필요한 서비스 입니다.');
+            } else {
+                //ons.notification.alert('Incorrect username or password.');
+                document.getElementById('loginFrm').submit();
+            }
+        };
+
+        memberRegist = function() {
+            if ( Member.validation()) {
+                Member.goDataEdit('I');
+            }
+        };
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#Tab2-VIEW").hide();
+            Common.goBoardView('001220315234525' ,'login_info');     //로그인안내
+            Common.goBoardView('001220315234302' ,'regist_info');      //회원가입안내
+        });
+
+        yacView = function() {
+            boardView("001220314101959","약관동의");
+        };
+
+        useaccView =  function() {
+            boardView("001220315005518","개인정보 수집 및 이용동의");
+        };
+
+        prvaccChg = function() {
+            if ( $("#prvacc").val() == "N" ) {
+                $("#prvacc").val("Y");
+            } else {
+                $("#prvacc").val("N");
+            }
+        };
+
+        yacaccChg = function() {
+            if ( $("#yacacc").val() == "N" ) {
+                $("#yacacc").val("Y");
+            } else {
+                $("#yacacc").val("N");
+            }
+        };
+
+        useaccChg = function() {
+            if ( $("#useacc").val() == "N" ) {
+                $("#useacc").val("Y");
+            } else {
+                $("#useacc").val("N");
+            }
+        };
+
+        boardView = function (bbsCd, title) {
+            $.ajax({
+                url:'/bbsApi/bbsDataView',
+                type: 'post',
+                data: {
+                    bId : bbsCd
+                },
+                success: function (data) {
+                    detailView(title, data.dataView.cont);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        };
+
+        detailView = function (title, cont) {
+            $("#Tab2-VIEW").empty();
+            $("#Tab2-VIEW").append('<ons-toolbar>\n' +
+                '           <div class="center" style="font-size: 16px;">' + title + '</div>\n' +
+                '        </ons-toolbar>\n' +
+                '        <ons-card class="card_op">\n' +
+                '            <p class="btn_magin">\n' +
+                '                <ons-button class="selbox_100" onclick="dataclose();">닫기</ons-button>\n' +
+                '            </p>\n' +
+                '            <div class="content">\n' +
+                '                <ons-list>\n' +
+                '                    <ons-list-item>' + cont +  '</ons-list-item>\n' +
+                '                </ons-list>\n' +
+                '            </div>\n' +
+                '        </ons-card>');
+            $("#Tab2-VIEW").show();
+        };
+
+        dataclose = function () {
+            $("#Tab2-VIEW").hide();
+        };
+    </script>
+</th:block>
+
+
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/defaultLayout">
+
+
+<body id="page-top">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+        <!-- 코드목록 Start -->
+        <div class="card shadow mb-4">
+            <form id="dataFrm" name="dataFrm" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <!-- title Start -->
+                        <div style="float: left;margin-top:-8px">
+                            바디품목등록
+                        </div>
+                        <!-- title End -->
+                    </h6>
+                </div>
+
+                <!-- Search Start -->
+                <div class="card-body">
+                    <div class="card-body-deep-right">
+                        <ul class="ul_box">
+                            <li class="li_in_box">
+                                작성일 :
+                                <input type="text" id="stdt" name="stdt" readonly class="form-control form-control-sm dis_inline" style="width:130px;">
+                                <img src="/img/cal.png" style="width:18px;height:18px;margin-left:-26px">
+                                ~
+                                <input type="text" id="endt" name="endt" readonly class="form-control form-control-sm dis_inline" style="width:130px;">
+                                <img src="/img/cal.png" style="width:18px;height:18px;margin-left:-26px">
+                            </li>
+                            <li class="li_in_box">
+                                상품명 :
+                                <input type="text" class="input_h_w_100" id="s_itemnm" name="s_itemnm" index="0" value="">
+                            </li>
+                            <li class="li_in_box" style="padding-left: 20px;">
+                                <a id="searchBtn" href="#"
+                                   class="btn btn-primary btn-icon-split btn-sm">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </span>
+                                    <span class="text">검색</span>
+                                </a>
+
+                                <a id="excelBtn" href="#"
+                                   class="btn btn-primary btn-icon-split btn-sm">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-file-excel fa-sm"></i>
+                                                </span>
+                                    <span class="text">Excel</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Search End -->
+
+                <ul class="ul_box">
+                    <li style="width:60%;float: left;">
+                        <!-- List Start -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered display nowrap" id="dataTable" width="100%" cellspacing="0"
+                                       style="font-size:12px;">
+                                    <thead>
+                                    <tr>
+                                        <th>상품코드</th>
+                                        <th>품명</th>
+                                        <th>제조사명</th>
+                                        <th>제조사코드</th>
+                                        <th>차량명</th>
+                                        <th>차량명코드</th>
+                                        <th>몯델명</th>
+                                        <th>모델명코드</th>
+                                        <th>연식명</th>
+                                        <th>연식코드</th>
+                                        <th>지역시도명</th>
+                                        <th>지역시도코드</th>
+                                        <th>지역시군구명</th>
+                                        <th>지역시군구코드</th>
+                                        <th>가격</th>
+                                        <th>파트넘버</th>
+                                        <th>차대번호</th>
+                                        <th>상세정보</th>
+                                        <th>등록자아이디</th>
+                                        <th>등록일시</th>
+                                        <th>수정자아이디</th>
+                                        <th>수정일시</th>
+                                        <th>품명코드</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- List End -->
+                    </li>
+                    <li style="width:40%;float: left;">
+                        <!-- View Start -->
+                        <div class="card-body">
+                            <div class="card-body-button">
+                                <ul class="ul_box">
+                                    <li class="li_in_box" id="creBtnView" style="padding: 2px;">
+                                        <a id="creBtn" href="#"
+                                           class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                            <span class="text">신규</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="li_in_box" id="insBtnView" style="padding: 2px;">
+                                        <a id="insBtn" href="#"
+                                           class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                            <span class="text">등록</span>
+                                        </a>
+                                    </li>
+                                    <li class="li_in_box" id="udtBtnView" style="padding: 2px;">
+                                        <a id="udtBtn" href="#"
+                                           class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                            <span class="text">수정</span>
+                                        </a>
+                                    </li>
+                                    <li class="li_in_box" id="delBtnView" style="padding: 2px;">
+                                        <a id="delBtn" href="#"
+                                           class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                            <span class="text">삭제</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="card-body-deep-left">
+                                <ul class="ul_box">
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *판매여부 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="mdopenyn" name="mdopenyn">
+                                                    <option value="Y">판매중</option>
+                                                    <option value="N">판매완료</option>
+                                                </select>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *품명 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <input type="text" id="incomcd" name="incomcd" />
+                                                <select class="input_h"  id="itemcd" name="itemcd"></select>
+                                                <input type="hidden" id="itemnm" name="itemnm" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *제조사 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="makecd" name="makecd"></select>
+                                                <input type="hidden" id="makenm" name="makenm" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *차량명 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="carcd" name="carcd"></select>
+                                                <input type="hidden" id="carnm" name="carnm" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *모델명 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="modelcd" name="modelcd"></select>
+                                                <input type="hidden" id="modelnm" name="modelnm" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *연식 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="yearcd" name="yearcd"></select>
+                                                <input type="hidden" id="yearnm" name="yearnm" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *지역(시군) :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="areasicd" name="areasicd"></select>
+                                                <input type="hidden" id="areasinm" name="areasinm" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *지역(구군) :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="areagucd" name="areagucd"></select>
+                                                <input type="hidden" id="areagunm" name="areagunm" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                *가격(원) :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <input class="input_h" type="text" id="price" name="price" maxlength="50" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                파트넘버 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <input class="input_h" type="text" id="partnum" name="partnum" maxlength="50" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                차대번호 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <input class="input_h" type="text" id="vinnum" name="vinnum" maxlength="50" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                장착가능여부 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="mountyn" name="mountyn">
+                                                    <option value="Y">가능</option>
+                                                    <option value="N">불가</option>
+                                                </select>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                도색가능여부 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <select class="input_h"  id="coloryn" name="coloryn">
+                                                    <option value="Y">가능</option>
+                                                    <option value="N">불가</option>
+                                                </select>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                상세정보 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <input class="input_h" type="text" id="memo" name="memo" maxlength="50" />
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                첨부파일 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <div class="file-wrap">
+                                                    <input type="file" id="file" name="file" onchange="goFileUpload();" />
+                                                </div>
+                                                <ul id="file_list" class="down-list">
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                등록자ID :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <span id="regid"></span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                등록일 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <span id="regdt"></span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                수정자ID :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <span id="modid"></span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="li_sp">
+                                        <ul class="ul_box">
+                                            <li class="li_fl_box">
+                                                수정일 :
+                                            </li>
+                                            <li class="li_in_box">
+                                                <span id="moddt"></span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- View End -->
+                    </li>
+                </ul>
+
+
+
+            </form>
+        </div>
+        <!-- 코드목록 end -->
+    </div>
+
+    <form id="codeSch" name="codeSch" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" id="s_mstCd" name="s_mstCd" />
+        <input type="hidden" id="s_useYn" name="s_useYn" />
+    </form>
+
+    <form id="zipSch" name="zipSch" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" id="si" name="si" />
+    </form>
+
+    <form id="dataFileForm" name="dataFileForm">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" id="f_gubun" name="f_gubun" value="item"/>
+        <input type="hidden" id="f_bId" name="f_bId" />
+    </form>
+
+    <script th:src="@{/js/com/util.js}" type="text/javascript"></script>
+    <script th:src="@{/js/page/common.js}" type="text/javascript"></script>
+    <script th:src="@{/js/page/incom/incoming.js}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            Incoming.init();
+        });
+
+        $('#stdt').datepicker({
+            format : "yyyy-mm-dd",
+            language : "kr"
+        });
+
+        $('#endt').datepicker({
+            format : "yyyy-mm-dd",
+            language : "kr"
+        });
+    </script>
+    <script>
+        function goFileUpload() {
+            if ( $("#file_list").find("li").length > 5 ) {
+                alert("사진 파일은 6개까지 올릴 수 있습니다.");
+                return;
+            }
+
+            if ( $('#file')[0].files[0] == null || $('#file')[0].files[0] == "" ) {
+                return;
+            }
+
+            //상품고유값은 incomcd임
+            $('#f_bId').val($('#incomcd').val());
+
+            let params = new FormData();
+            params.append('gubun',$("#f_gubun").val());
+            params.append('bId',$("#f_bId").val());
+            params.append('file',$('#file')[0].files[0]);
+            params.append('[[${_csrf.parameterName}]]', '[[${_csrf.token}]]');
+
+            $.ajax({
+                url:'[[@{/fileUpDownApi/fileUpload}]]',
+                type:'post',
+                enctype: 'multipart/form-data',
+                dataType: 'json',
+                data: params,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success:function(data){
+                    $("#file").val("");
+                    FileListTable(data.fileList);
+                }
+            });
+        }
+
+        FileListTable = function(data) {
+            $("#file_list").empty();
+            $("#fileUp").val("");
+            let strHtml = "";
+            let resultList = data ;
+            if(resultList && resultList.length > 0) {
+                for(let i=0; i<resultList.length; i++) {
+                    let retObj = resultList[i];
+                    strHtml = strHtml + "<li>";
+                    strHtml = strHtml + "   <div class='check-box'><span></span>" + retObj.fileOrgNm + "</div>";
+                    strHtml = strHtml + "<a href='[[@{/fileUpDownApi/fileDownloadId}]]/" + retObj.fid + "' class='btn' download='" + retObj.fileOrgNm + "'>다운로드</a>";
+                    strHtml = strHtml + "<a href=\"javascript:goFileDelete('" + retObj.fid + "','" + retObj.fileSaveNm + "');\" class='btn' download='" + retObj.fileOrgNm + "'>삭제</a>";
+                    strHtml = strHtml + "</li>";
+                }
+            }
+            $("#file_list").html(strHtml);
+        };
+
+        goFileAllDownload = function () {
+            let fidList = $("input[name=fidList]");
+
+            let fidArr = new Array();
+            let j = 0;
+            for(let i=0; i < fidList.length; i++) {
+                if (fidList.eq(i).is(":checked") == true) {
+                    fidArr[j++] = fidList.eq(i).val();
+                }
+            }
+
+            if ( fidArr == null || fidArr.length < 1 ) {
+                return;
+            }
+
+            $("#f_fidList").val(fidArr);
+            const f = document.zipDown;
+            f.method = "GET";
+            f.action = "[[@{/fileUpDownApi/fileDownload/All}]]";
+
+            console.log($("#f_fidList").val());
+            f.submit();
+        };
+
+
+        goFileDelete = function(fId, savaFileName) {
+            $.ajax({
+                url:'[[@{/fileUpDownApi/fileDelete}]]',
+                type:'post',
+                dataType: 'json',
+                data: {
+                    fId : fId,
+                    gubun : $("#f_gubun").val(),
+                    bId : $("#f_bId").val(),
+                    fileSaveNm : savaFileName,
+                    [[${_csrf.parameterName}]]: '[[${_csrf.token}]]'
+                },
+                success:function(data){
+                    FileListTable(data.fileList);
+                }
+            });
+        };
+    </script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/defaultLayout">
+
+
+<body id="page-top">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+        <!-- 코드목록 Start -->
+        <div class="card shadow mb-4">
+
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <!-- title Start -->
+                    <div style="float: left;margin-top:-8px">
+                        기타관리
+                    </div>
+                    <!-- title End -->
+                </h6>
+            </div>
+
+            <!-- Search Start -->
+            <div class="card-body">
+                <div class="card-body-deep-right">
+                    <ul class="ul_box">
+                        <li class="li_in_box">
+
+                        </li>
+                        <li class="li_in_box">
+
+                        </li>
+                        <li class="li_in_box">
+                            <input type="button" class="bod-btn" id="registBtn" value="저장" onclick="goRegist();">
+                            <input type="button" class="bod-btn" id="modifyBtn" value="수정" onclick="goModify();">
+                            <input type="button" class="bod-btn" id="deleteBtn" value="삭제" onclick="goDelete();">
+                            <input type="button" class="bod-btn" id="listBtn"   value="목록" onclick="goList();">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Search End -->
+
+            <div class="con-area" style="padding: 1.25rem;">
+                <script th:src="@{/js/ckeditor/ckeditor.js}" type="text/javascript"></script>
+                <form id="metadataFrm" name="metadataFrm" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" id="gubun" name="gubun" th:value="${param.gubun}"/>
+                    <input type="hidden" id="pageNum" name="pageNum" th:value="${param.pageNum}"/>
+                    <input type="hidden" id="pageSize" name="pageSize" th:value="${param.pageSize}"/>
+                    <input type="hidden" id="selItemList" name="selItemList" th:value="${param.sSubject}"/>
+                    <input type="hidden" id="sSubject" name="sSubject" th:value="${param.sSubject}"/>
+                    <input type="hidden" id="sRegDt" name="sRegDt" th:value="${param.sRegDt}"/>
+                    <input type="hidden" id="eRegDt" name="eRegDt" th:value="${param.eRegDt}"/>
+                    <input type="hidden" id="bId" name="bId" th:value="${param.bId}"/>
+                    <input type="hidden" id="notiYn" name="notiYn" />
+
+                    <ul class="ul_box">
+                        <li class="li_sp">
+                            <ul class="ul_box">
+                                <li class="li_fl_box">
+                                    공지글 :
+                                </li>
+                                <li class="li_in_box">
+                                    <input type="checkbox" id="notiYnChk" name="notiYnChk">
+                                    <label for="notiYnChk">
+                                        <span></span> 공지여부
+                                    </label>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="li_sp">
+                            <ul class="ul_box">
+                                <li class="li_fl_box">
+                                    작성자 :
+                                </li>
+                                <li class="li_in_box">
+                                    <input type="text" class="intxt v2" id="regNm" name="regNm" th:value="${session['userNm']}" readonly />
+                                    <input type="hidden" id="regId" name="regId" th:value="${session['userId']}" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="li_sp">
+                            <ul class="ul_box">
+                                <li class="li_fl_box">
+                                    제목 :
+                                </li>
+                                <li class="li_in_box">
+                                    <input type="text" class="intxt" id="subject" name="subject" style="width:70%" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="li_sp">
+                            <textarea class="form-control" id="cont" name="cont"></textarea>
+                            <script type="text/javascript">
+                                CKEDITOR.replace('cont' , {
+                                    height: 520
+                                });
+                            </script>
+                        </li>
+                        <li class="li_sp">
+                            <ul class="ul_box">
+                                <li class="li_fl_box">
+                                    첨부파일 :
+                                </li>
+                                <li class="li_in_box">
+                                    <ul class="ul_box">
+                                        <li class="li_sp">
+                                            <label for="file">파일첨부</label>
+                                            <input type="file" id="file" name="file" onchange="goFileUpload();" />
+                                        </li>
+                                        <li class="li_sp">
+                                            <ul id="file_list" class="down-list">
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </form>
+                <form id="dataFileForm" name="dataFileForm">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" id="f_gubun" name="f_gubun" th:value="${param.gubun}"/>
+                    <input type="hidden" id="f_bId" name="f_bId" th:value="${param.bId}"/>
+                </form>
+                <form id="zipDown" name="zipDown">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" id="f_fidList" name="f_fidList" />
+                </form>
+
+            </div>
+        </div>
+        <!-- 코드목록 end -->
+    </div>
+
+    <script th:src="@{/js/com/util.js}" type="text/javascript"></script>
+    <script th:src="@{/js/com/board.js}" type="text/javascript"></script>
+    <script lang="javascript">
+        $(document).ready(function () {
+            if ( $("#bId").val() != "" ) {
+                goDataView();
+                $("#registBtn").hide();
+                $("#hitTitle").show();
+                $("#modifyBtn").show();
+                $("#deleteBtn").show();
+            }
+            else {
+                $("#registBtn").show();
+                $("#hitTitle").hide();
+                $("#modifyBtn").hide();
+                $("#deleteBtn").hide();
+
+                $("#bId").val($("#gubun").val() + Util.getToday());
+                $("#f_bId").val($("#bId").val());
+                console.log($("#bId").val());
+            }
+
+            $("#notiYnChk").change(function() {
+                if(this.checked) {
+                    $("#notiYn").val("Y");
+                }
+                else {
+                    $("#notiYn").val("N");
+                }
+            });
+        });
+
+        function goDataView() {
+            let param = $("form[name=metadataFrm]").serialize();
+            $.ajax({
+                url: '[[@{/bbsApi/bbsDataView}]]',
+                type: 'post',
+                data: param,
+                success: function (data) {
+                    console.log(data.dataView);
+                    if (data.dataView == null || data.dataView == "" ) {
+                        alert("잘못된 접근 입니다.");
+                        goList();
+                    }
+                    else {
+                        $("#subject").val(data.dataView.subject);
+                        $("#cont").val(data.dataView.cont);
+                        $("#regId").val(data.dataView.regId);
+                        $("#regNm").val(data.dataView.regNm);
+                        //$("#regDt").val(data.dataView.regDt);
+                        //$("#hit").html(data.dataView.hit);
+                        if (data.dataView.notiYn == "Y") {
+                            $("#notiYnChk").prop('checked',true);
+                            $("#notiYn").val("Y");
+                        }
+                        else {
+                            $("#notiYn").val("N");
+                        }
+
+                        if ( data.dataView.fileList.length > 0 ) {
+                            FileListTable(data.dataView.fileList);
+                        }
+                    }
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function goFileAllDownload() {
+            let fidList = $("input[name=fidList]");
+
+            let fidArr = new Array();
+            let j = 0;
+            for(let i=0; i < fidList.length; i++) {
+                if (fidList.eq(i).is(":checked") == true) {
+                    fidArr[j++] = fidList.eq(i).val();
+                }
+            }
+
+            if ( fidArr == null || fidArr.length < 1 ) {
+                return;
+            }
+
+            $("#f_fidList").val(fidArr);
+            const f = document.zipDown;
+            f.method = "GET";
+            f.action = "[[@{/bbsApi/bbsFileDownload/All}]]";
+
+            console.log($("#f_fidList").val());
+            f.submit();
+        }
+
+
+        function goFileDelete(fId, savaFileName) {
+            $.ajax({
+                url:'[[@{/bbsApi/bbsFileDelete}]]',
+                type:'post',
+                dataType: 'json',
+                data: {
+                    fId : fId,
+                    gubun : $("#f_gubun").val(),
+                    bId : $("#f_bId").val(),
+                    fileSaveNm : savaFileName,
+                    [[${_csrf.parameterName}]]: '[[${_csrf.token}]]'
+                },
+                success:function(data){
+                    FileListTable(data.fileList);
+                }
+            });
+        }
+
+        function goFileUpload() {
+            if ( $('#file')[0].files[0] == null || $('#file')[0].files[0] == "" ) {
+                return;
+            }
+
+            let params = new FormData();
+            params.append('gubun',$("#f_gubun").val());
+            params.append('bId',$("#f_bId").val());
+            params.append('file',$('#file')[0].files[0]);
+            params.append('[[${_csrf.parameterName}]]', '[[${_csrf.token}]]');
+
+            $.ajax({
+                url:'[[@{/bbsApi/bbsFileUpload}]]',
+                type:'post',
+                enctype: 'multipart/form-data',
+                dataType: 'json',
+                data: params,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success:function(data){
+                    FileListTable(data.fileList);
+                }
+            });
+        }
+
+        var FileListTable = function(data) {
+            $("#file_list").empty();
+            $("#fileUp").val("");
+            let strHtml = "";
+            let resultList = data ;
+            if(resultList && resultList.length > 0) {
+                for(let i=0; i<resultList.length; i++) {
+                    let retObj = resultList[i];
+                    strHtml = strHtml + "<li>";
+                    strHtml = strHtml + "   <div class='check-box'><span></span>" + retObj.fileOrgNm + "</div>";
+                    strHtml = strHtml + "<a href='[[@{/bbsApi/bbsFileDownload}]]/" + retObj.fid + "' class='btn' download='" + retObj.fileOrgNm + "'>다운로드</a>";
+                    strHtml = strHtml + "<a href=\"javascript:goFileDelete('" + retObj.fid + "','" + retObj.fileSaveNm + "');\" class='btn' download='" + retObj.fileOrgNm + "'>삭제</a>";
+                    strHtml = strHtml + "</li>";
+                }
+            }
+
+            $("#file_list").html(strHtml);
+        };
+
+        function goRegist() {
+            let content = CKEDITOR.instances['cont'].getData();
+            $("#cont").val(content);
+
+            let param = $("form[name=metadataFrm]").serialize();
+            $.ajax({
+                url: '[[@{/bbsApi/bbsDataInsert}]]',
+                type: 'post',
+                data: param,
+                success: function (data) {
+                    console.log(data.resultCode);
+                    alert(data.resultMsg);
+
+                    $("#registBtn").hide();
+                    $("#hitTitle").show();
+                    $("#modifyBtn").show();
+                    $("#deleteBtn").show();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function goModify() {
+            let content = CKEDITOR.instances['cont'].getData();
+            $("#cont").val(content);
+
+            let param = $("form[name=metadataFrm]").serialize();
+            $.ajax({
+                url: '[[@{/bbsApi/bbsDataUpdate}]]',
+                type: 'post',
+                data: param,
+                success: function (data) {
+                    console.log(data.resultCode);
+                    alert(data.resultMsg);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function goDelete() {
+            let param = $("form[name=metadataFrm]").serialize();
+            $.ajax({
+                url: '[[@{/bbsApi/bbsDataDelete}]]',
+                type: 'post',
+                data: param,
+                success: function (data) {
+                    console.log(data.resultCode);
+                    alert(data.resultMsg);
+                    goList();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function  goList() {
+            let f = document.metadataFrm;
+            f.action = "[[@{/admin/etcmng/notiboard}]]";
+            f.submit();
+        }
+    </script>
+
+
+
+</th:block>
+</body>
+</html>

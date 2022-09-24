@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/defaultLayout">
+
+
+<body id="page-top">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+        <!-- 코드목록 Start -->
+        <div class="card shadow mb-4">
+
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <!-- title Start -->
+                        <div style="float: left;margin-top:-8px">
+                            기타관리
+                        </div>
+                        <!-- title End -->
+                    </h6>
+                </div>
+
+            <form id="metadataFrm" name="metadataFrm" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <input type="hidden" id="gubun" name="gubun" value="001" />
+                <input type="hidden" id="pageNum" name="pageNum" value="1" />
+                <input type="hidden" id="pageSize" name="pageSize" value="10" />
+                <input type="hidden" id="selItemList" name="selItemList" value="" />
+                <input type="hidden" id="sSubject" name="sSubject" />
+                <input type="hidden" id="sRegDt" name="sRegDt" />
+                <input type="hidden" id="eRegDt" name="eRegDt" />
+                <input type="hidden" id="bId" name="bId"/>
+            </form>
+
+            <!-- Search Start -->
+                <div class="card-body">
+                    <div class="card-body-deep-right">
+                        <ul class="ul_box">
+                            <li class="li_in_box">
+                                제목 :
+                                <input id="s_subject" type="text" class="intxt">
+                            </li>
+                            <li class="li_in_box">
+                                등록일자 :
+                                <input type="text" class="intxt" id="startDate" readonly>
+                                <script>
+                                    $(function () {
+                                        $("#startDate").datepicker();
+                                    });
+                                </script>
+                                ~
+                                <input type="text" class="intxt" id="endDate" readonly>
+                                <script>
+                                    $(function () {
+                                        $("#endDate").datepicker();
+                                    });
+                                </script>
+                            </li>
+                            <li class="li_in_box">
+                                <input type="button" value="신규등록" class="rfc-btn" style="cursor: pointer;" onclick="goBbsNewData('');">
+                                <input type="button" value="조회" class="rfc-btn" style="cursor: pointer;" onclick="goSearch();">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Search End -->
+
+                <ul class="ul_box" style="padding: 1.25rem;">
+                    <p class="all-material">총 <span id="totalCount">16건</span>의 자료가 있습니다.</p>
+                    <div class="table-wrap">
+                        <table class="table-01" id="dataGride" name="dataGride">
+                            <colgroup>
+                                <col width="65%">
+                                <col width="20%">
+                                <col width="20%">
+                            </colgroup>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div id="paging" class="paging" />
+                </ul>
+        </div>
+        <!-- 코드목록 end -->
+    </div>
+
+    <script th:src="@{/js/com/util.js}" type="text/javascript"></script>
+    <script th:src="@{/js/com/board.js}" type="text/javascript"></script>
+    <script lang="javascript">
+        $(document).ready(function () {
+            goDataList(1);
+        });
+
+        function goDataList(currentPage) {
+            $("#pageNum").val(currentPage);
+            let strHtml = "";
+            let param = $("form[name=metadataFrm]").serialize();
+            $.ajax({
+                url: '[[@{/bbsApi/bbsDataList}]]',
+                type: 'post',
+                data: param,
+                success: function (data) {
+                    $("#dataGride tbody").empty();
+                    $("#totalCount").empty();
+                    //console.log(data.totalCnt);
+                    //console.log(data.dataList);
+                    strHtml = '<tr><th style="text-align: center">제목</th><th style="text-align: center">등록일</th><th style="text-align: center">작성자</th></tr>';
+                    if (data.dataList.length > 0 ) {
+                        $.each(data.dataList, function (key) {
+                            strHtml += '<tr>';
+                            if ( data.dataList[key].notiYn == "Y") {
+                                strHtml += '<td style="text-align: left"><a href="javascript:goBbsDataview(\'' + data.dataList[key].bid  + '\');"><span>[공지]</span>' + data.dataList[key].subject + '</a></td>';
+                            }
+                            else {
+                                strHtml += '<td style="text-align: left"><a href="javascript:goBbsDataview(\'' + data.dataList[key].bid  + '\');">' + data.dataList[key].subject + '</a></td>';
+                            }
+                            strHtml += '<td>' + data.dataList[key].regDt + '</td>';
+                            strHtml += '<td>' + data.dataList[key].regNm + '</td>';
+                            strHtml += '</tr>';
+                        });
+                    }
+                    else {
+                        strHtml += '<tr><td colspan="3">검색된 데이터가 없습니다.</td></tr>';
+                    }
+                    $("#dataGride tbody").html(strHtml);
+                    $("#totalCount").html(data.totalCnt);
+
+                    paging(data.totalCnt, $("#pageNum").val(), $("#pageSize").val(), 5, 'paging', 'active', 'goDataList');
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        function goSearch() {
+            $("#sSubject").val($("#s_subject").val());
+            $("#sRegDt").val($("#startDate").val());
+            $("#eRegDt").val($("#endDate").val());
+
+            if ($("#sRegDt").val() != "" || $("#eRegDt").val() != "" ) {
+                if ($("#sRegDt").val() == "" ) $("#sRegDt").val("00000000");
+                if ($("#eRegDt").val() == "" ) $("#eRegDt").val("99991231");
+            }
+            goDataList(1);
+        }
+
+        function goBbsDataview(code) {
+            $("#bId").val(code);
+
+            let f = document.metadataFrm;
+            f.action = "[[@{/admin/etcmng/etcboardEdit}]]";
+            f.submit();
+        }
+
+        function goBbsNewData(code) {
+            $("#bId").val(code);
+
+            let f = document.metadataFrm;
+            f.action = "[[@{/admin/etcmng/etcboardEdit}]]";
+            f.submit();
+        }
+    </script>
+
+
+
+</th:block>
+</body>
+</html>

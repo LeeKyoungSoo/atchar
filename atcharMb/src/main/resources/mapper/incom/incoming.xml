@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lnworks.atchar.incom.mapper.Incoming">
+
+    <resultMap id="BbsDataItemMap" type="com.lnworks.atchar.incom.domain.IncomingVO">
+        <result property="bId" column="bId"/>
+        <collection property="fileList" column="{bId=incomcd}"
+                    ofType="com.lnworks.atchar.common.domain.FileUpDownVO"
+                    select="getFileList" />
+    </resultMap>
+
+    <select id="getDataList" parameterType="com.lnworks.atchar.incom.domain.IncomingVO" resultMap="BbsDataItemMap">
+        <![CDATA[
+        /* Incoming.getDataList */
+        SELECT a.incomcd
+            ,a.itemnm
+            ,a.itemcd
+            ,a.makenm
+            ,a.makecd
+            ,a.carnm
+            ,a.carcd
+            ,a.modelnm
+            ,a.modelcd
+            ,a.yearnm
+            ,a.yearcd
+            ,a.areasinm
+            ,a.areasicd
+            ,a.areagunm
+            ,a.areagucd
+            ,a.price
+            ,a.partnum
+            ,a.vinnum
+            ,a.memo
+            ,a.mountyn
+            ,a.coloryn
+            ,a.regid
+            ,a.regdt
+            ,a.modid
+            ,a.moddt
+            ,a.useyn
+            ,a.itgu
+            ,a.mdopenyn
+            ,ifnull(b.comnm, '') as comnm
+            ,ifnull(b.comphone, '') as comphone
+            ,if ( b.comphonelink != '', b.comphonelink, ifnull(b.comphone, '')) as comphonelink
+            ,ifnull(b.usernm, '') as usernm
+        FROM tb_incoming a left join tb_member b on a.regid = b.userid
+        WHERE 1 = 1
+        ]]>
+        <if test='itemcd != null and !itemcd.equals("")'>
+            AND a.itemcd =  #{itemcd}
+        </if>
+        <if test='makecd != null and !makecd.equals("")'>
+            AND a.makecd =  #{makecd}
+        </if>
+        <if test='carcd != null and !carcd.equals("")'>
+            AND a.carcd =  #{carcd}
+        </if>
+        <if test='modelcd != null and !modelcd.equals("")'>
+            AND a.modelcd =  #{modelcd}
+        </if>
+        <if test='yearcd != null and !yearcd.equals("")'>
+            AND a.yearcd =  #{yearcd}
+        </if>
+        <if test='areasicd != null and !areasicd.equals("")'>
+            AND a.areasicd =  #{areasicd}
+        </if>
+        <if test='areagucd != null and !areagucd.equals("")'>
+            AND a.areagucd =  #{areagucd}
+        </if>
+        <if test='regid != null and !regid.equals("")'>
+            AND a.regid =  #{regid}
+        </if>
+        <if test='allyn != null and !allyn.equals("")'>
+            AND a.useyn =  #{allyn}
+        </if>
+        <if test='itgu != null and !itgu.equals("")'>
+            AND a.itgu =  #{itgu}
+        </if>
+        <if test='s_itemnm != null and !s_itemnm.equals("")'>
+            AND a.itemnm LIKE CONCAT('%', #{s_itemnm}, '%')
+        </if>
+        <if test='(stdt != null and !stdt.equals("")) and (endt != null and !endt.equals(""))'>
+            AND DATE_FORMAT(a.regdt, '%Y%m%d')
+            BETWEEN DATE_FORMAT(IFNULL(NULLIF(#{stdt},''),'00000000'), '%Y%m%d')
+            AND DATE_FORMAT(IFNULL(NULLIF(#{endt},''),'99991231'), '%Y%m%d')
+        </if>
+
+        <if test='orderbygubun == null or orderbygubun.equals("")'>
+            ORDER BY a.regdt DESC, a.incomcd DESC, a.itemnm ASC
+        </if>
+        <if test='orderbygubun != null and orderbygubun.equals("D")'>
+            ORDER BY a.regdt DESC, a.incomcd DESC, a.itemnm ASC
+        </if>
+        <if test='orderbygubun != null and orderbygubun.equals("I")'>
+            ORDER BY a.itemnm ASC, a.regdt DESC, a.incomcd DESC
+        </if>
+
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <select id="getMyDataList" parameterType="com.lnworks.atchar.incom.domain.IncomingVO" resultMap="BbsDataItemMap">
+        <![CDATA[
+        /* Incoming.getMyDataList */
+        SELECT
+             A.incomcd
+            ,A.itemnm
+            ,A.itemcd
+            ,A.makenm
+            ,A.makecd
+            ,A.carnm
+            ,A.carcd
+            ,A.modelnm
+            ,A.modelcd
+            ,A.yearnm
+            ,A.yearcd
+            ,A.areasinm
+            ,A.areasicd
+            ,A.areagunm
+            ,A.areagucd
+            ,A.price
+            ,A.partnum
+            ,A.vinnum
+            ,A.memo
+            ,A.mountyn
+            ,A.coloryn
+            ,A.regid
+            ,A.regdt
+            ,A.modid
+            ,A.moddt
+            ,A.useyn
+            ,A.itgu
+            ,A.mdopenyn
+            ,ifnull(C.comnm, '') as comnm
+            ,ifnull(C.comphone, '') as comphone
+            ,if ( C.comphonelink != '', C.comphonelink, ifnull(C.comphone, '')) as comphonelink
+            ,ifnull(C.usernm, '') as usernm
+        FROM tb_incoming A
+            inner join tb_my_item B on A.incomcd = B.incomcd and  B.regid = #{regid}
+            left join tb_member C on A.regid = C.userid
+        WHERE 1 = 1
+        ]]>
+        <if test='itemcd != null and !itemcd.equals("")'>
+            AND A.itemcd =  #{itemcd}
+        </if>
+        <if test='makecd != null and !makecd.equals("")'>
+            AND A.makecd =  #{makecd}
+        </if>
+        <if test='carcd != null and !carcd.equals("")'>
+            AND A.carcd =  #{carcd}
+        </if>
+        <if test='modelcd != null and !modelcd.equals("")'>
+            AND A.modelcd =  #{modelcd}
+        </if>
+        <if test='yearcd != null and !yearcd.equals("")'>
+            AND A.yearcd =  #{yearcd}
+        </if>
+        <if test='areasicd != null and !areasicd.equals("")'>
+            AND A.areasicd =  #{areasicd}
+        </if>
+        <if test='areagucd != null and !areagucd.equals("")'>
+            AND A.areagucd =  #{areagucd}
+        </if>
+        <if test='allyn != null and !allyn.equals("")'>
+            AND A.useyn =  #{allyn}
+        </if>
+        <if test='itgu != null and !itgu.equals("")'>
+            AND A.itgu =  #{itgu}
+        </if>
+        <if test='s_itemnm != null and !s_itemnm.equals("")'>
+            AND A.itemnm LIKE CONCAT('%', #{s_itemnm}, '%')
+        </if>
+        <if test='(stdt != null and !stdt.equals("")) and (endt != null and !endt.equals(""))'>
+            AND DATE_FORMAT(A.regdt, '%Y%m%d')
+            BETWEEN DATE_FORMAT(IFNULL(NULLIF(#{A.stdt},''),'00000000'), '%Y%m%d')
+            AND DATE_FORMAT(IFNULL(NULLIF(#{A.endt},''),'99991231'), '%Y%m%d')
+        </if>
+
+        <if test='orderbygubun == null or orderbygubun.equals("")'>
+            ORDER BY A.regdt DESC, A.incomcd DESC, A.itemnm ASC
+        </if>
+        <if test='orderbygubun != null and orderbygubun.equals("D")'>
+            ORDER BY A.regdt DESC, A.incomcd DESC, A.itemnm ASC
+        </if>
+        <if test='orderbygubun != null and orderbygubun.equals("I")'>
+            ORDER BY A.itemnm ASC, A.regdt DESC, A.incomcd DESC
+        </if>
+
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <select id="getClickDataList" parameterType="com.lnworks.atchar.incom.domain.IncomingVO" resultMap="BbsDataItemMap">
+        <![CDATA[
+        /* Incoming.getClickDataList */
+        SELECT
+             A.incomcd
+            ,A.itemnm
+            ,A.itemcd
+            ,A.makenm
+            ,A.makecd
+            ,A.carnm
+            ,A.carcd
+            ,A.modelnm
+            ,A.modelcd
+            ,A.yearnm
+            ,A.yearcd
+            ,A.areasinm
+            ,A.areasicd
+            ,A.areagunm
+            ,A.areagucd
+            ,A.price
+            ,A.partnum
+            ,A.vinnum
+            ,A.memo
+            ,A.mountyn
+            ,A.coloryn
+            ,A.regid
+            ,A.regdt
+            ,A.modid
+            ,A.moddt
+            ,A.useyn
+            ,A.itgu
+            ,A.mdopenyn
+            ,ifnull(C.comnm, '') as comnm
+            ,ifnull(C.comphone, '') as comphone
+            ,if (C.comphonelink != '', C.comphonelink, ifnull(C.comphone, '')) as comphonelink
+            ,ifnull(C.usernm, '') as usernm
+        FROM tb_incoming A
+            inner join tb_click_item B  on A.incomcd = B.incomcd and  B.regid = #{regid}
+            left join tb_member C on A.regid = C.userid
+        WHERE 1 = 1
+        ]]>
+        <if test='itemcd != null and !itemcd.equals("")'>
+            AND A.itemcd =  #{itemcd}
+        </if>
+        <if test='makecd != null and !makecd.equals("")'>
+            AND A.makecd =  #{makecd}
+        </if>
+        <if test='carcd != null and !carcd.equals("")'>
+            AND A.carcd =  #{carcd}
+        </if>
+        <if test='modelcd != null and !modelcd.equals("")'>
+            AND A.modelcd =  #{modelcd}
+        </if>
+        <if test='yearcd != null and !yearcd.equals("")'>
+            AND A.yearcd =  #{yearcd}
+        </if>
+        <if test='areasicd != null and !areasicd.equals("")'>
+            AND A.areasicd =  #{areasicd}
+        </if>
+        <if test='areagucd != null and !areagucd.equals("")'>
+            AND A.areagucd =  #{areagucd}
+        </if>
+        <if test='allyn != null and !allyn.equals("")'>
+            AND A.useyn =  #{allyn}
+        </if>
+        <if test='itgu != null and !itgu.equals("")'>
+            AND A.itgu =  #{itgu}
+        </if>
+        <if test='s_itemnm != null and !s_itemnm.equals("")'>
+            AND A.itemnm LIKE CONCAT('%', #{s_itemnm}, '%')
+        </if>
+        <if test='(stdt != null and !stdt.equals("")) and (endt != null and !endt.equals(""))'>
+            AND DATE_FORMAT(A.regdt, '%Y%m%d')
+            BETWEEN DATE_FORMAT(IFNULL(NULLIF(#{A.stdt},''),'00000000'), '%Y%m%d')
+            AND DATE_FORMAT(IFNULL(NULLIF(#{A.endt},''),'99991231'), '%Y%m%d')
+        </if>
+
+        <if test='orderbygubun == null or orderbygubun.equals("")'>
+            ORDER BY B.regdt DESC, A.incomcd DESC, A.itemnm ASC
+        </if>
+        <if test='orderbygubun != null and orderbygubun.equals("D")'>
+            ORDER BY B.regdt DESC, A.incomcd DESC, A.itemnm ASC
+        </if>
+        <if test='orderbygubun != null and orderbygubun.equals("I")'>
+            ORDER BY A.itemnm ASC, B.regdt DESC, A.incomcd DESC
+        </if>
+
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <insert id="insData" parameterType="com.lnworks.atchar.incom.domain.IncomingVO">
+        <![CDATA[
+        /* Incoming.insData */
+        INSERT INTO tb_incoming
+        (
+             incomcd
+            ,itemnm
+            ,itemcd
+            ,makenm
+            ,makecd
+            ,carnm
+            ,carcd
+            ,modelnm
+            ,modelcd
+            ,yearnm
+            ,yearcd
+            ,areasinm
+            ,areasicd
+            ,areagunm
+            ,areagucd
+            ,price
+            ,partnum
+            ,vinnum
+            ,memo
+            ,mountyn
+            ,coloryn
+            ,itgu
+            ,regid
+            ,regdt
+            ,modid
+            ,moddt
+        )
+        VALUES
+            (
+             #{incomcd}
+            ,#{itemnm}
+            ,#{itemcd}
+            ,#{makenm}
+            ,#{makecd}
+            ,#{carnm}
+            ,#{carcd}
+            ,#{modelnm}
+            ,#{modelcd}
+            ,#{yearnm}
+            ,#{yearcd}
+            ,#{areasinm}
+            ,#{areasicd}
+            ,#{areagunm}
+            ,#{areagucd}
+            ,#{price}
+            ,#{partnum}
+            ,#{vinnum}
+            ,#{memo}
+            ,#{mountyn}
+            ,#{coloryn}
+            ,#{itgu}
+            ,#{regid}
+            ,now()
+            ,#{modid}
+            ,now()
+            )
+            ON DUPLICATE KEY
+        UPDATE
+            itemnm = #{itemnm}
+            ,itemcd = #{itemcd}
+            ,makenm = #{makenm}
+            ,makecd = #{makecd}
+            ,carnm = #{carnm}
+            ,carcd = #{carcd}
+            ,modelnm = #{modelnm}
+            ,modelcd = #{modelcd}
+            ,yearnm = #{yearnm}
+            ,yearcd = #{yearcd}
+            ,areasinm = #{areasinm}
+            ,areasicd = #{areasicd}
+            ,areagunm = #{areagunm}
+            ,areagucd = #{areagucd}
+            ,price = #{price}
+            ,partnum = #{partnum}
+            ,vinnum = #{vinnum}
+            ,memo = #{memo}
+            ,mountyn = #{mountyn}
+            ,coloryn = #{coloryn}
+            ,itgu = #{itgu}
+            ,modid = #{modid}
+            ,moddt = now()
+        ]]>
+    </insert>
+
+    <delete id="delData" parameterType="com.lnworks.atchar.incom.domain.IncomingVO">
+        <![CDATA[
+        /* Incoming.delData */
+        DELETE FROM tb_incoming
+        WHERE incomcd = #{incomcd}
+        ]]>
+    </delete>
+
+    <update id="dataViewOpt" parameterType="com.lnworks.atchar.incom.domain.IncomingVO">
+        <![CDATA[
+        /* Incoming.dataViewOpt */
+        UPDATE tb_incoming
+        SET useyn = #{useyn}
+        WHERE incomcd = #{incomcd}
+        ]]>
+    </update>
+
+    <select id="getFileList" parameterType="map" resultType="com.lnworks.atchar.common.domain.FileUpDownVO">
+        <![CDATA[
+        /* BbsBoard.getFileList */
+        SELECT
+            fId
+             ,bId
+             ,fileOrgNm
+             ,fileSaveNm
+             ,fileSize
+             ,DATE_FORMAT(regDt, '%Y-%m-%d') AS regDt
+        FROM tb_item_file
+        WHERE bId = #{bId}
+        ORDER BY fid DESC
+        ]]>
+    </select>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lnworks.atchar.incom.mapper.MyItem">
+
+    <select id="getMyDataList" parameterType="com.lnworks.atchar.incom.domain.MyItemVO" resultType="com.lnworks.atchar.incom.domain.MyItemVO">
+        <![CDATA[
+        /* MyItem.getMyDataList */
+        SELECT
+            incomcd
+            ,regdt
+        FROM tb_my_item
+        WHERE  regid =  #{regid}
+        ORDER BY regdt DESC, incomcd DESC
+        ]]>
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <insert id="insMyData" parameterType="com.lnworks.atchar.incom.domain.MyItemVO">
+        <![CDATA[
+        /* MyItem.insMyData */
+        INSERT INTO tb_my_item
+        (
+             incomcd
+            ,regid
+        )
+        VALUES
+            (
+             #{incomcd}
+            ,#{regid}
+            )
+            ON DUPLICATE KEY
+        UPDATE
+           regdt = now()
+        ]]>
+    </insert>
+
+    <delete id="delMyData" parameterType="com.lnworks.atchar.incom.domain.MyItemVO">
+        <![CDATA[
+        /* MyItem.delMyData */
+        DELETE FROM tb_my_item
+        WHERE incomcd = #{incomcd}
+            AND regid = #{regid}
+        ]]>
+    </delete>
+
+    <select id="getItemCnt" parameterType="com.lnworks.atchar.incom.domain.MyItemVO" resultType="int">
+        <![CDATA[
+        /* MyItem.getMyDataList */
+        SELECT
+            count(*) as cnt
+        FROM tb_my_item
+        WHERE incomcd = #{incomcd}
+          AND regid = #{regid}
+        ]]>
+    </select>
+
+    <select id="getClickDataList" parameterType="com.lnworks.atchar.incom.domain.MyItemVO" resultType="com.lnworks.atchar.incom.domain.MyItemVO">
+        <![CDATA[
+        /* MyItem.getClickDataList */
+        SELECT
+            incomcd
+            ,regdt
+            ,clickcnt
+            ,regid
+        FROM tb_click_item
+        WHERE regid =  #{regid}
+        ORDER BY regdt DESC, incomcd DESC
+        ]]>
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <insert id="insClickData" parameterType="com.lnworks.atchar.incom.domain.MyItemVO">
+        <![CDATA[
+        /* MyItem.insClickData */
+        INSERT INTO tb_click_item
+        (
+            incomcd
+            ,regid
+            ,clickcnt
+        )
+        VALUES
+        (
+            #{incomcd}
+            ,#{regid}
+            ,1
+        )
+        ON DUPLICATE KEY
+        UPDATE
+            regdt = now()
+            ,clickcnt = clickcnt + 1
+        ]]>
+    </insert>
+</mapper>

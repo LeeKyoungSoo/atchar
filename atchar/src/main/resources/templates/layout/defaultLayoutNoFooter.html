@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">앗차앱(Atchar App)관리시스템</title>
+    <!-- 공통 css, js, meta tag -->
+    <th:block th:replace="layout/commonHead"></th:block>
+</head>
+
+<body>
+
+<th:block th:replace="layout/header"></th:block>
+
+<th:block layout:fragment="content"></th:block>
+
+<!-- 공통 footer -->
+<th:block th:replace="layout/commonFooter"></th:block>
+
+<th:block layout:fragment="script"></th:block>
+
+</body>
+
+</html>

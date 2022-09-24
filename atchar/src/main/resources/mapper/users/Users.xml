@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lnworks.atchar.user.mapper.Users">
+
+    <update id="uptSrchPw" parameterType="com.lnworks.atchar.user.domain.UsersVO">
+        <![CDATA[
+        /* Users.uptData */
+        UPDATE tb_member
+        SET
+            pwd =  #{pwd}
+        WHERE userid = #{userid}
+        ]]>
+    </update>
+
+    <select id="getDataSrch" parameterType="com.lnworks.atchar.user.domain.UsersVO" resultType="com.lnworks.atchar.user.domain.UsersVO">
+        <![CDATA[
+        /* Users.getDataView */
+        SELECT
+            userid
+            ,pwd
+            ,usernm
+            ,level
+            ,useyn
+        FROM tb_member
+        WHERE 1 = 1
+        ]]>
+        <if test='userid != null and !userid.equals("")'>
+            AND userid = #{userid}
+        </if>
+        <if test='usernm != null and !usernm.equals("")'>
+            AND usernm = #{usernm}
+        </if>
+    </select>
+
+    <insert id="insData" parameterType="com.lnworks.atchar.user.domain.UsersVO">
+        <![CDATA[
+        /* Users.insData */
+        INSERT INTO tb_member
+        (
+            userid
+        ,pwd
+        ,usernm
+        ,level
+        ,useyn
+        )
+        VALUES
+            (
+                #{userid}
+            ,#{pwd}
+            ,#{usernm}
+            ,#{level}
+            ,#{useyn}
+            )
+        ]]>
+    </insert>
+
+    <update id="uptState" parameterType="com.lnworks.atchar.user.domain.UsersVO">
+        <![CDATA[
+        /* Users.uptData */
+        UPDATE tb_member
+        SET
+            level = #{level}
+          ,useyn = #{useyn}
+        WHERE userid = #{userid}
+        ]]>
+    </update>
+
+    <update id="uptData" parameterType="com.lnworks.atchar.user.domain.UsersVO">
+        <![CDATA[
+        /* Users.uptData */
+        UPDATE tb_member
+        SET
+            pwd = #{pwd}
+          ,usernm = #{usernm}
+          ,level = #{level}
+          ,useyn = #{useyn}
+        WHERE userid = #{userid}
+        ]]>
+    </update>
+
+    <update id="uptDataSp" parameterType="com.lnworks.atchar.user.domain.UsersVO">
+        <![CDATA[
+        /* Users.uptDataSp */
+        UPDATE tb_member
+        SET
+            pwd	= #{pwd}
+        WHERE userid = #{userid}
+        ]]>
+    </update>
+
+    <delete id="delData" parameterType="com.lnworks.atchar.user.domain.UsersVO">
+        <![CDATA[
+        /* Users.delData */
+        DELETE FROM tb_member
+        WHERE userid = #{userid}
+        ]]>
+    </delete>
+
+    <select id="getUserCheck" parameterType="com.lnworks.atchar.user.domain.UsersVO" resultType="com.lnworks.atchar.user.domain.UsersVO">
+     <![CDATA[
+        /* Users.getDataView */
+        SELECT
+            userid
+             ,pwd
+             ,usernm
+             ,level
+             ,useyn
+        FROM tb_member
+        WHERE userid = #{userid}
+          AND useyn = 'Y'
+        ]]>
+    </select>
+
+    <select id="getDataView" parameterType="com.lnworks.atchar.user.domain.UsersVO" resultType="com.lnworks.atchar.user.domain.UsersVO">
+     <![CDATA[
+        /* Users.getDataView */
+        SELECT
+            userid
+             ,pwd
+             ,usernm
+             ,level
+             ,useyn
+        FROM tb_member
+        WHERE userid = #{userid}
+        ]]>
+    </select>
+
+    <select id="getDataCnt" parameterType="com.lnworks.atchar.user.domain.UsersVO" resultType="int">
+        <![CDATA[
+        /* Users.getDataCnt */
+        SELECT count(*) as cnt
+        FROM tb_member
+        WHERE 1 = 1
+        ]]>
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND (
+            usernm LIKE CONCAT('%', #{searchValue}, '%')
+            OR userid LIKE CONCAT('%', #{searchValue}, '%')
+            )
+        </if>
+    </select>
+
+    <select id="getDataList" parameterType="com.lnworks.atchar.user.domain.UsersVO" resultType="com.lnworks.atchar.user.domain.UsersVO">
+        <![CDATA[
+        /* Users.getDataList */
+        SELECT
+            userid
+            ,pwd
+            ,usernm
+            ,level
+            ,useyn
+        FROM tb_member
+        WHERE 1 = 1
+        ]]>
+        <if test='searchValue != null and !searchValue.equals("")'>
+            AND (
+            usernm LIKE CONCAT('%', #{searchValue}, '%')
+            OR userid LIKE CONCAT('%', #{searchValue}, '%')
+            )
+        </if>
+        ORDER BY userid DESC
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+</mapper>

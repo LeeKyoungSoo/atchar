@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/defaultLayout">
+
+
+<body id="page-top">
+
+<th:block layout:fragment="content">
+    <div class="container-fluid">
+        <!-- 코드목록 Start -->
+        <div class="card shadow mb-4">
+        <form id="dataFrm" name="dataFrm" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <!-- title Start -->
+                    <div style="float: left;margin-top:-8px">
+                        공통코드관리
+                    </div>
+                    <!-- title End -->
+                </h6>
+            </div>
+
+            <!-- Search Start -->
+            <div class="card-body">
+                <div class="card-body-deep-right">
+                    <ul class="ul_box">
+                        <li class="li_in_box">
+                            상위코드 :
+                            <input type="text" class="input_h_w_100" id="s_mstCd" name="s_mstCd" index="0" value="">
+                        </li>
+                        <li class="li_in_box">
+                            코드명 :
+                            <input type="text" class="input_h_w_100" id="s_comNm" name="s_comNm" index="0" value="">
+                        </li>
+                        <li class="li_in_box">
+                            코드 :
+                            <input type="text" class="input_h_w_100" id="s_comCd" name="s_comCd" index="0" value="">
+                        </li>
+                        <li class="li_in_box">
+                            사용여부 :
+                            <select class="input_h_w_100"  id="s_useYn" name="s_useYn">
+                                <option value="">==전체==</option>
+                                <option value="Y">사용</option>
+                                <option value="N">사용안함</option>
+                            </select>
+                        </li>
+                        <li class="li_in_box" style="padding-left: 20px;">
+                            <a id="searchBtn" href="#"
+                               class="btn btn-primary btn-icon-split btn-sm">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </span>
+                                <span class="text">검색</span>
+                            </a>
+                       </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Search End -->
+
+            <ul class="ul_box">
+                <li style="width:60%;float: left;">
+                    <!-- List Start -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered display nowrap" id="dataTable" width="100%" cellspacing="0"
+                                   style="font-size:12px;">
+                                <colgroup>
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                    <col width="20%">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>코드</th>
+                                    <th>코드명</th>
+                                    <th>상위코드</th>
+                                    <th>우선순위</th>
+                                    <th>사용여부</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- List End -->
+                </li>
+                <li style="width:40%;float: left;">
+                    <!-- View Start -->
+                    <div class="card-body">
+                        <div class="card-body-button">
+                            <ul class="ul_box">
+                                <li class="li_in_box" id="creBtnView" style="padding: 2px;">
+                                    <a id="creBtn" href="#"
+                                       class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </span>
+                                        <span class="text">신규</span>
+                                    </a>
+                                </li>
+
+                                <li class="li_in_box" id="insBtnView" style="padding: 2px;">
+                                    <a id="insBtn" href="#"
+                                       class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text">등록</span>
+                                    </a>
+                                </li>
+                                <li class="li_in_box" id="udtBtnView" style="padding: 2px;">
+                                    <a id="udtBtn" href="#"
+                                       class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text">수정</span>
+                                    </a>
+                                </li>
+                                <li class="li_in_box" id="delBtnView" style="padding: 2px;">
+                                    <a id="delBtn" href="#"
+                                       class="btn btn-primary btn-icon-split btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-trash"></i>
+                                        </span>
+                                        <span class="text">삭제</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="card-body-deep-left">
+                            <ul class="ul_box">
+                                <li class="li_sp">
+                                    <ul class="ul_box">
+                                        <li class="li_fl_box">
+                                            상위코드 :
+                                        </li>
+                                        <li class="li_in_box">
+                                            <input class="input_h" type="text" id="mstCd" name="mstCd" />
+                                            <br><span style="color: red">해당 값이 없으면 생략</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="li_sp">
+                                    <ul class="ul_box">
+                                        <li class="li_fl_box">
+                                            *코드명 :
+                                        </li>
+                                        <li class="li_in_box">
+                                            <input type="hidden" id="comCd" name="comCd" />
+                                            <input class="input_h" type="text" id="comNm" name="comNm" maxlength="40" />
+                                            <br><span id="comCdView" style="color: red;"></span>
+                                            <br><span id="comCdAdd" style="cursor:pointer">[하위코드신규등록]</span>
+                                                <span id="comCdSubView" style="cursor:pointer">[하위코드보기]</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="li_sp">
+                                    <ul class="ul_box">
+                                        <li class="li_fl_box">
+                                            *우선순위 :
+                                        </li>
+                                        <li class="li_in_box">
+                                            <input class="input_h" type="text" id="odNo" name="odNo" maxlength="3" />
+                                            <br><span style="color: red">숫자 입력</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="li_sp">
+                                    <ul class="ul_box">
+                                        <li class="li_fl_box">
+                                            사용유무 :
+                                        </li>
+                                        <li class="li_in_box">
+                                            <select class="input_h"  id="useYn" name="useYn">
+                                                <option value="Y">사용</option>
+                                                <option value="N">사용안함</option>
+                                            </select>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- View End -->
+                </li>
+            </ul>
+
+
+
+
+        </form>
+        </div>
+        <!-- 코드목록 end -->
+    </div>
+
+    <script th:src="@{/js/com/util.js}" type="text/javascript"></script>
+    <script th:src="@{/js/page/etcmng/comcode.js}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            Comcode.init();
+        });
+    </script>
+
+</th:block>
+</body>
+</html>

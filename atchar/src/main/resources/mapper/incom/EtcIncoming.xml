@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lnworks.atchar.incom.mapper.EtcIncoming">
+
+    <resultMap id="BbsDataItemMap" type="com.lnworks.atchar.incom.domain.IncomingVO">
+        <result property="bId" column="bId"/>
+        <collection property="fileList" column="{bId=incomcd}"
+                    ofType="com.lnworks.atchar.common.domain.FileUpDownVO"
+                    select="getFileList" />
+    </resultMap>
+
+    <select id="getDataList" parameterType="com.lnworks.atchar.incom.domain.IncomingVO" resultMap="BbsDataItemMap">
+        <![CDATA[
+        /* Incoming.getDataList */
+        SELECT a.incomcd
+            ,a.itemnm
+            ,a.areasinm
+            ,a.areasicd
+            ,a.areagunm
+            ,a.areagucd
+            ,a.price
+            ,a.memo
+            ,a.regid
+            ,a.regdt
+            ,a.modid
+            ,a.moddt
+            ,a.useyn
+            ,a.itgu
+            ,a.mdopenyn
+            ,b.comnm
+            ,b.comphone
+            ,b.comphonelink
+        FROM tb_etc_incoming a left join tb_member b on a.regid = b.userid
+        WHERE 1 = 1
+        ]]>
+        <if test='s_itemnm != null and !s_itemnm.equals("")'>
+            AND a.itemnm LIKE CONCAT('%', #{s_itemnm}, '%')
+        </if>
+        <if test='(stdt != null and !stdt.equals("")) and (endt != null and !endt.equals(""))'>
+            AND DATE_FORMAT(a.regdt, '%Y%m%d')
+            BETWEEN DATE_FORMAT(IFNULL(NULLIF(#{stdt},''),'00000000'), '%Y%m%d')
+            AND DATE_FORMAT(IFNULL(NULLIF(#{endt},''),'99991231'), '%Y%m%d')
+        </if>
+        ORDER BY a.regdt DESC, a.incomcd DESC, a.itemnm ASC
+        <if test='offSet > -1'>
+            LIMIT #{offSet}, #{limit}
+        </if>
+    </select>
+
+    <insert id="insData" parameterType="com.lnworks.atchar.incom.domain.IncomingVO">
+        <![CDATA[
+        /* Incoming.insData */
+        INSERT INTO tb_etc_incoming
+        (
+             incomcd
+            ,itemnm
+            ,areasinm
+            ,areasicd
+            ,areagunm
+            ,areagucd
+            ,price
+            ,memo
+            ,itgu
+            ,regid
+            ,regdt
+            ,modid
+            ,moddt
+        )
+        VALUES
+            (
+             #{incomcd}
+            ,#{itemnm}
+            ,#{areasinm}
+            ,#{areasicd}
+            ,#{areagunm}
+            ,#{areagucd}
+            ,#{price}
+            ,#{memo}
+            ,#{itgu}
+            ,#{regid}
+            ,now()
+            ,#{modid}
+            ,now()
+            )
+            ON DUPLICATE KEY
+        UPDATE
+            itemnm = #{itemnm}
+            ,areasinm = #{areasinm}
+            ,areasicd = #{areasicd}
+            ,areagunm = #{areagunm}
+            ,areagucd = #{areagucd}
+            ,price = #{price}
+            ,memo = #{memo}
+            ,itgu = #{itgu}
+            ,modid = #{modid}
+            ,moddt = now()
+        ]]>
+    </insert>
+
+    <delete id="delData" parameterType="com.lnworks.atchar.incom.domain.IncomingVO">
+        <![CDATA[
+        /* Incoming.delData */
+        DELETE FROM tb_etc_incoming
+        WHERE incomcd = #{incomcd}
+        ]]>
+    </delete>
+
+    <select id="getFileList" parameterType="map" resultType="com.lnworks.atchar.common.domain.FileUpDownVO">
+        <![CDATA[
+        /* BbsBoard.getFileList */
+        SELECT
+            fId
+             ,bId
+             ,fileOrgNm
+             ,fileSaveNm
+             ,fileSize
+             ,DATE_FORMAT(regDt, '%Y-%m-%d') AS regDt
+        FROM tb_item_file
+        WHERE bId = #{bId}
+        ORDER BY fid DESC
+        ]]>
+    </select>
+</mapper>
