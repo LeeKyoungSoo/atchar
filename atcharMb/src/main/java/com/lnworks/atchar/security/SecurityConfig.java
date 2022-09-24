@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .key("zerock")
                 .userDetailsService(zerockUserService)
                 .tokenRepository(getTokenSeries())
-                .tokenValiditySeconds(60*60*24*7).and()
+                .tokenValiditySeconds(60*60*24*10).and()
             .csrf().disable().anonymous();
         //http.cors().and();
     }

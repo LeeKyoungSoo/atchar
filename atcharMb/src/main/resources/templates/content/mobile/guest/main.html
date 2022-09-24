@@ -20,7 +20,7 @@
                     Home
                 </ons-list-item>
                 <ons-list-item onclick="fn.load('info')" tappable>
-                    앗차란?
+                    아부품이란?
                 </ons-list-item>
                 <ons-list-item onclick="fn.pageurl('/mobile/member/item')" tappable>
                     바디품목검색
@@ -86,12 +86,12 @@
 
             <th:block th:if="${session['userLv']} == null ">
             <section style="padding: 8px 8px">
-                <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#305478;color:#ffffff;font-weight: 700;" onclick="fn.pageurl('/mobile/guest/login')">로그인</ons-button>
+                <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;" onclick="fn.pageurl('/mobile/guest/login')">로그인</ons-button>
             </section>
             </th:block>
 
             <section style="padding: 8px 8px">
-                <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#305478;color:#ffffff;font-weight: 700;" onclick="fn.pageurl('/mobile/member/item')">서비스 바로 가기</ons-button>
+                <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;" onclick="fn.pageurl('/mobile/member/item')">서비스 바로 가기</ons-button>
             </section>
         </div>
     </ons-page>
@@ -107,24 +107,24 @@
                 </ons-toolbar-button>
             </div>
             <div class="center">
-                앗차란?
+                아부품이란?
             </div>
         </ons-toolbar>
-        <div style="height:100%;background-color: #305478;">
-            <p style="margin-top: 12px;margin-left:12px;padding-bottom: 0px;display: inline-block;font-size: 50px;font-weight: 700;color: #FFF;line-height: 65px;">
-                꼭 필요한<img src="/img/info.png" style="margin-left:8px;width:40px;"><br>
+        <div style="height:100%;background-color: #ffffff;">
+            <p style="margin-top: 12px;margin-left:12px;padding-bottom: 0px;display: inline-block;font-size: 50px;font-weight: 700;color: #305478;line-height: 65px;">
+                꼭 필요한<img src="/img/info.png" style="margin-left:8px;width:40px;">공구<br>
                 거래 플랫폼<br>
-                앗차 !
+                아~~ "아부품"
             </p>
 
             <div id="infoView" class="info_pd" style="margin-top: -48px;"></div>
 
             <p style="text-align: center;">
-                <img src="/img/icon.png" width="30%">
+                <img src="/img/icon_new.png" width="30%">
             </p>
 
             <section style="padding: 8px 8px">
-                <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#ffffff;color:#305478;font-weight: 700;" onclick="fn.pageurl('/mobile/guest/login?active=tab2')">회원가입</ons-button>
+                <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;" onclick="fn.pageurl('/mobile/guest/login?active=tab2')">회원가입</ons-button>
             </section>
 
         </div>
