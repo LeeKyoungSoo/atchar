@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/mobile/guest/login")
                 .defaultSuccessUrl("/mobile/member/item?start=Y").and()
             .exceptionHandling()
-                .accessDeniedPage("/mobile/guest/accessDenied").and()
+                .accessDeniedPage("/mobile/guest/main").and()
             .logout()
                 .logoutUrl("/mobile/guest/logout")
                 .logoutSuccessUrl("/mobile/guest/login")
