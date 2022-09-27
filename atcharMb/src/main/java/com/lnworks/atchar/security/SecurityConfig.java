@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID", "SOME", "OTHER", "COOKIES").and()
             .rememberMe()
-                .key("zerock")
+                .key("uniqueAndSecret")
                 .userDetailsService(zerockUserService)
                 .tokenRepository(getTokenSeries())
                 .tokenValiditySeconds(60*60*24*10).and()
@@ -69,6 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         repo.setDataSource(dataSource);
         return repo;
     }
+
 
     /*
     @Autowired
