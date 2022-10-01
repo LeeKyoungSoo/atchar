@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/incom/incomingApi")
 public class IncomApiController {
-
     @Autowired
     IncomingService incomingService;
 
@@ -26,15 +25,14 @@ public class IncomApiController {
     @PostMapping("/myDataList")
     public HashMap goMyDataList(IncomingVO vo, Principal principal) throws Exception {
         HashMap resultMap = new HashMap<>();
-
+        int nLimit = 10;
         vo.setRegid(principal.getName());
         vo.setModid(principal.getName());
-
         if ( (vo.getPageNum() == null) || vo.getPageNum().equals("") ) {
-            vo.setOffSet(-1);
+            vo.setLimit(nLimit);
+            vo.setOffSet(0);
         }
         else {
-            int nLimit = 10;
             if ( vo.getPageSize() != null && !vo.getPageSize().equals("") ) {
                 nLimit = Integer.parseInt(vo.getPageSize());
             }
@@ -51,13 +49,13 @@ public class IncomApiController {
     @PostMapping("/dataList")
     public HashMap goDataList(IncomingVO vo) throws Exception {
         HashMap resultMap = new HashMap<>();
-
+        int nLimit = 10;
         vo.setAllyn("Y");
         if ( (vo.getPageNum() == null) || vo.getPageNum().equals("") ) {
-            vo.setOffSet(-1);
-        }
-        else {
-            int nLimit = 10;
+            //vo.setOffSet(-1);
+            vo.setLimit(nLimit);
+            vo.setOffSet(0);
+        } else {
             if ( vo.getPageSize() != null && !vo.getPageSize().equals("") ) {
                 nLimit = Integer.parseInt(vo.getPageSize());
             }
@@ -74,15 +72,14 @@ public class IncomApiController {
     @PostMapping("/myAttentionDataList")
     public HashMap goMyAttentionDataList(IncomingVO vo, Principal principal) throws Exception {
         HashMap resultMap = new HashMap<>();
-
+        int nLimit = 10;
         vo.setRegid(principal.getName());
         vo.setAllyn("Y");
-
         if ( (vo.getPageNum() == null) || vo.getPageNum().equals("") ) {
-            vo.setOffSet(-1);
+            vo.setLimit(nLimit);
+            vo.setOffSet(0);
         }
         else {
-            int nLimit = 10;
             if ( vo.getPageSize() != null && !vo.getPageSize().equals("") ) {
                 nLimit = Integer.parseInt(vo.getPageSize());
             }
@@ -99,15 +96,14 @@ public class IncomApiController {
     @PostMapping("/clickDataList")
     public HashMap goClickDataList(IncomingVO vo, Principal principal) throws Exception {
         HashMap resultMap = new HashMap<>();
-
+        int nLimit = 10;
         vo.setRegid(principal.getName());
         vo.setAllyn("Y");
-
         if ( (vo.getPageNum() == null) || vo.getPageNum().equals("") ) {
-            vo.setOffSet(-1);
+            vo.setLimit(nLimit);
+            vo.setOffSet(0);
         }
         else {
-            int nLimit = 10;
             if ( vo.getPageSize() != null && !vo.getPageSize().equals("") ) {
                 nLimit = Integer.parseInt(vo.getPageSize());
             }
