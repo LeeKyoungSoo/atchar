@@ -1,4 +1,5 @@
 let gv_logData;
+let itemListConfig = {};
 
 let Ebmng = {
     init : function () {
@@ -10,6 +11,8 @@ let Ebmng = {
         //처음 진입 시점에 등록하게 되면 생성된 키가 필요
         $("#incomcd").val(Ebmng.createKey());
         $("#f_bId").val($("#incomcd").val());
+
+        itemListConfig.pageNum = 1;     //페이지넘버
     },
 
     config : function () {
@@ -151,7 +154,7 @@ let Ebmng = {
         $("#file_list").empty();
     },
 
-    goDataList : function () {
+    goDataList : function (gubun) {
         /*
         let allyn = $("#allyn").is(":checked");
         if ( allyn ) {
@@ -161,17 +164,45 @@ let Ebmng = {
             allyn = "Y";
         }
         */
+
+        if ( gubun == "N" ) {
+            itemListConfig.pageNum += 1;
+        } else {
+            itemListConfig.pageNum = 1;
+        }
+
         let allyn = "";
         $.ajax({
             url: '/incom/etcItemApi/myDataList',
             type: 'post',
             data: {
-                allyn : allyn
+                allyn : allyn,
+                pageNum : itemListConfig.pageNum
             },
             success: function (data) {
-                $("#rowlist").empty();
+                if ( gubun != "N" ) {
+                    $("#rowlist").empty();
+                }
                 let rowData = data.dataList;
                 gv_logData = rowData;
+
+                if ( rowData.length < 1 ) {
+                    if ( gubun != "N" ) {
+                        modal({
+                            type: 'success',
+                            title: '검색결과',
+                            text: "요청하신 상품검색결과는 0건입니다."
+                        });
+                    } else {
+                        modal({
+                            type: 'success',
+                            title: '검색결과',
+                            text: "추가 목록이 존재하지 않습니다."
+                        });
+                    }
+                    return;
+                }
+
                 $.each(rowData, function (key) {
                     let useyn = "노출";
                     if (rowData[key].useyn == 'N' ) {

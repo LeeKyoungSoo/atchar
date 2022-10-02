@@ -77,6 +77,7 @@ let ItemAtchar = {
      * @lastupdate 2022.09.30
      */
     goDataList : function (code, gubun) {
+        //debugger;
         if ( code == undefined ) {
             code = 0;
         }
@@ -88,8 +89,7 @@ let ItemAtchar = {
             itemListConfig.gCode = code;
             itemListConfig.pageNum = 1;
         }
-
-        console.log(itemListConfig);
+        //console.log(itemListConfig);
 
         $("#orderbygubun").val($("#searchGubun").val());
         $("#pageNum").val(itemListConfig.pageNum);

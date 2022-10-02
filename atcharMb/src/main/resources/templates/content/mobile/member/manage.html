@@ -94,6 +94,7 @@
                     <ons-page id="Tab1">
                         <div id="item_reg" class="info_pd"></div>
                         <form id="dataFrm" name="dataFrm" method="post">
+                            <input type="hidden" name="pageNum" id="pageNum" />
                             <input type="hidden" id="incomcd" name="incomcd" />
                             <div style="text-align: left; padding: 30px;">
                                 <p class="sub_title_margin"><span class="red">*</span> 품명</p>
@@ -241,8 +242,11 @@
 
                         <div id="item_list" class="info_pd"></div>
 
-                        <ons-list id="rowlist">
-                        </ons-list>
+                        <ons-list id="rowlist"></ons-list>
+
+                        <p id="btnAddView" class="btn_magin center" style="text-align: center">
+                            <ons-button class="selbox_btn" id="insAddBtn" onclick="Incoming.goDataList('N');">더보기(↓)</ons-button>
+                        </p>
                     </ons-page>
                 </template>
 

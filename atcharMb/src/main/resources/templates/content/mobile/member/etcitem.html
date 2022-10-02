@@ -116,12 +116,18 @@
                                 상품검색탭에서 검색조건 입력 후<br> 검색 버튼을 눌러주세요.
                             </p>
                         </ons-list>
+
+                        <p id="btnAddView" class="btn_magin center" style="text-align: center">
+                            <ons-button class="selbox_btn" id="insAddBtn" onclick="ItemAtchar.goDataList('', 'N');">더보기(↓)</ons-button>
+                        </p>
+
                     </ons-page>
                </template>
                <template id="tab1.html">
                     <ons-page id="Tab1">
                         <div id="item_reg" class="info_pd"></div>
                         <form id="dataFrm" name="dataFrm" method="post">
+                            <input type="hidden" name="pageNum" id="pageNum" />
                             <input type="hidden" name="orderbygubun" id="orderbygubun" />
                             <div style="text-align: left; padding: 30px;">
                                 <p class="sub_title_margin">품명</p>

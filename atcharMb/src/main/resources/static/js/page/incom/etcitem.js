@@ -5,11 +5,15 @@ let $bannerWidth;   //이미지의 폭
 let $bannerHeight;  // 높이
 let $length;        //이미지의 갯수
 let rollingId;
+let itemListConfig = {};
 
 let ItemAtchar = {
     init : function () {
         ItemAtchar.config();
         $("#Tab2-VIEW").hide();
+
+        itemListConfig.gCode = 0;      //현재 선택된 목록형태  [0:바디검색목록][1:관심목록][2:최근검색]
+        itemListConfig.pageNum = 1;     //페이지넘버
     },
 
     config : function () {
@@ -59,10 +63,25 @@ let ItemAtchar = {
         }
     },
 
-    goDataList : function (code) {
+    goDataList : function (code, gubun) {
         //debugger;
+        if ( code == undefined ) {
+            code = 0;
+        }
+
+        if ( code == "" ) {
+            code = itemListConfig.gCode;
+            itemListConfig.pageNum += 1;
+        } else {
+            itemListConfig.gCode = code;
+            itemListConfig.pageNum = 1;
+        }
+        //console.log(itemListConfig);
+
         $("#orderbygubun").val($("#searchGubun").val());
+        $("#pageNum").val(itemListConfig.pageNum);
         let param = $("form[name=dataFrm]").serialize();
+
         let url;
         if ( code == 1 ) {
             url = "/incom/etcItemApi/myAttentionDataList";
@@ -77,16 +96,26 @@ let ItemAtchar = {
             type: 'post',
             data: param,
             success: function (data) {
-                $("#rowlist").empty();
+                if ( gubun != "N" ) {
+                    $("#rowlist").empty();
+                }
                 let rowData = data.dataList;
                 gv_logData = rowData;
 
                 if ( rowData.length < 1 ) {
-                    modal({
-                        type: 'success',
-                        title: '검색결과',
-                        text: "요청하신 상품검색결과는 0건입니다."
-                    });
+                    if ( gubun != "N" ) {
+                        modal({
+                            type: 'success',
+                            title: '검색결과',
+                            text: "요청하신 상품검색결과는 0건입니다."
+                        });
+                    } else {
+                        modal({
+                            type: 'success',
+                            title: '검색결과',
+                            text: "추가 목록이 존재하지 않습니다."
+                        });
+                    }
                 } else {
                     $.each(rowData, function (key) {
                         let fileSavename = "";
