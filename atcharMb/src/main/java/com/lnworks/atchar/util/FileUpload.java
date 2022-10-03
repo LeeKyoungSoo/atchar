@@ -63,6 +63,9 @@ public class FileUpload {
                 if (!"".equals(orginFileName)) {
                     filePath = fileStorePathStr + File.separator + newName;
                     mFile.transferTo(new File(filePath));
+
+                    Thumbnail thumbnail = new Thumbnail();
+                    thumbnail.makeThumbnail(uploadPath.getAbsolutePath(), newName, fileExt);
                 }
 
                 FileVO fvo = new FileVO();
@@ -102,6 +105,8 @@ public class FileUpload {
                 file.delete();
             }
             throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return resultMap;
     }
@@ -117,6 +122,13 @@ public class FileUpload {
             File file = new File(filePath);
             if (file.exists() && file.canWrite()) {
                 file.delete();
+                nReturn++;
+            }
+
+            String thumb_filePath = fileStorePathStr + File.separator + "thumb_" +fileName;
+            File thumb_file = new File(thumb_filePath);
+            if (thumb_file.exists() && thumb_file.canWrite()) {
+                thumb_file.delete();
                 nReturn++;
             }
         } catch (RuntimeException e) {
