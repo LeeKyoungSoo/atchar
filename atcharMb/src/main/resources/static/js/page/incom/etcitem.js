@@ -31,7 +31,7 @@ let ItemAtchar = {
             $("#areagucd").val("");
             code = 0;
         }
-        ItemAtchar.goDataList(code);
+        ItemAtchar.goDataList(code, "Y");
         return false;
     },
 
@@ -69,7 +69,7 @@ let ItemAtchar = {
             code = 0;
         }
 
-        if ( code == "" ) {
+        if ( "" + code == "" ) {
             code = itemListConfig.gCode;
             itemListConfig.pageNum += 1;
         } else {
@@ -119,13 +119,15 @@ let ItemAtchar = {
                 } else {
                     $.each(rowData, function (key) {
                         let fileSavename = "";
+                        let thumbName = "thumb_";
                         if ( rowData[key].fileList.length > 0 ) {
                             fileSavename = rowData[key].fileList[0].fileSaveNm;
+                            thumbName = thumbName + fileSavename;
                             if (rowData[key].mdopenyn == "Y" ) {
                                 $("#rowlist").append(
                                     '<ons-list-item onclick="ItemAtchar.detailView(' + key + ');">\n' +
                                     '  <div class="left" >\n' +
-                                    '       <img class="list-item__thumbnail item_list_img" src="/fileUpDownApi/display?filename=' + fileSavename + '">\n' +
+                                    '       <img class="list-item__thumbnail item_list_img" src="/fileUpDownApi/display?filename=' + thumbName + '">\n' +
                                     '  </div>\n' +
                                     '  <div class="center item_list_left">\n' +
                                     '       <span class="list-item__title">' + rowData[key].itemnm + ' <span class="red">(' + '판매중' + ')</span></span>' +
@@ -137,7 +139,7 @@ let ItemAtchar = {
                                 $("#rowlist").append(
                                     '<ons-list-item>\n' +
                                     '  <div class="left" >\n' +
-                                    '       <img class="list-item__thumbnail item_list_img" src="/fileUpDownApi/display?filename=' + fileSavename + '">\n' +
+                                    '       <img class="list-item__thumbnail item_list_img" src="/fileUpDownApi/display?filename=' + thumbName + '">\n' +
                                     '  </div>\n' +
                                     '  <div class="center item_list_left">\n' +
                                     '       <span class="list-item__title gray">' + rowData[key].itemnm + ' <span class="red">(' + '판매완료' + ')</span></span>' +
@@ -345,7 +347,7 @@ let ItemAtchar = {
                 let retObj = resultList[i];
                 strHtml = strHtml + "<li class='ulist_w_33'>";
                 strHtml = strHtml + "   <a href='/fileUpDownApi/fileDownloadId/" + retObj.fid + "'>" +
-                    "<img class='itemImg' src='/fileUpDownApi/display?filename=" + retObj.fileSaveNm + "' style='width:100px;height:100px' /></a>";
+                    "<img class='itemImg' src='/fileUpDownApi/display?filename=" + "" + retObj.fileSaveNm + "' style='width:100px;height:100px' /></a>";
                 strHtml = strHtml + "</li>";
             }
         }

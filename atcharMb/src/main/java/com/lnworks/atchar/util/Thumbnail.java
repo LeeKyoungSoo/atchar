@@ -1,8 +1,6 @@
 package com.lnworks.atchar.util;
 
 import org.imgscalr.Scalr;
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;

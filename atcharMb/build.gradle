@@ -56,7 +56,8 @@ dependencies {
     // poi
     implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
 
-    compileOnly group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
+    //thumbnail 이미지 처리
+    implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
 }
 
 test {
