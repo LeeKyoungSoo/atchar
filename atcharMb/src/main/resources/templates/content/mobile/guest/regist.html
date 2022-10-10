@@ -1,18 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/mobileLayout">
-
 <head>
     <title>WELCOME</title>
 </head>
-
 <body>
-
 <th:block layout:fragment="content">
-
     <ons-splitter>
         <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
             <ons-page>
@@ -98,29 +93,16 @@
                                 입력해 주십시오.
                             </div>
 
-                            <th:block th:if="${session['app']} != null ">
-                                <p>
-                                    <ons-input id="username" name="username" modifier="underbar" placeholder="아이디(email주소)" float></ons-input>
-                                </p>
-                                <p>
-                                    <ons-input id="password" name="password" modifier="underbar" type="password" placeholder="비밀번호" float></ons-input>
-                                </p>
-                                <p>
-                                    <input type="checkbox" id="remember-me" name="remember-me"
-                                           style="width:20px;height:20px"> 자동 로그인
-                                </p>
+                            <th:block th:if="${device != 'web'}">
                                 <p style="margin-top: 30px;">
-                                    <ons-button class="selbox_btn" onclick="login()">로그인</ons-button>
-                                </p>
-                               <!-- <p style="margin-top: 30px;">
                                     <ons-button
                                             class="selbox_btn"
                                             onclick="android.goToAppLogin()">로그인
                                     </ons-button>
-                                </p>-->
+                                </p>
                             </th:block>
-                            <th:block th:unless="${session['app']} != null ">
-                                <p>
+                            <th:block th:unless="${device != 'web'}">
+                               <p>
                                     <ons-input id="username" name="username" modifier="underbar" placeholder="아이디(email주소)" float></ons-input>
                                 </p>
                                 <p>

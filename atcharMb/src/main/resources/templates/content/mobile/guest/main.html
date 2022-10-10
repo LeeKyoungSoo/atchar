@@ -3,15 +3,11 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/mobileLayout">
-
 <head>
     <title>WELCOME</title>
 </head>
-
 <body>
-
 <th:block layout:fragment="content">
-
 <ons-splitter>
     <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
         <ons-page>
@@ -86,18 +82,14 @@
 
             <th:block th:if="${session['userLv']} == null ">
             <section style="padding: 8px 8px">
-                <th:block th:if="${session['app']} != null ">
-                    <!--<ons-button
+                <th:block th:if="${device != 'web'}">
+                    <ons-button
                             modifier="large"
                             style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;"
                             onclick="android.goToAppLogin()">로그인
-                    </ons-button>-->
-                    <ons-button modifier="large"
-                                style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;"
-                                onclick="fn.pageurl('/mobile/guest/login')">로그인
                     </ons-button>
                 </th:block>
-                <th:block th:unless="${session['app']} != null ">
+                <th:block th:unless="${device != 'web'}">
                     <ons-button modifier="large"
                                 style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;"
                                 onclick="fn.pageurl('/mobile/guest/login')">로그인
@@ -105,7 +97,6 @@
                 </th:block>
             </section>
             </th:block>
-
             <section style="padding: 8px 8px">
                 <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;" onclick="fn.pageurl('/mobile/member/item')">서비스 바로 가기</ons-button>
             </section>
@@ -139,9 +130,11 @@
                 <img src="/img/icon_new.png" width="30%">
             </p>
 
+            <th:block th:if="${session['userLv']} == null ">
             <section style="padding: 8px 8px">
                 <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;" onclick="fn.pageurl('/mobile/guest/login?active=tab2')">회원가입</ons-button>
             </section>
+            </th:block>
 
         </div>
     </ons-page>

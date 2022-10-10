@@ -16,49 +16,72 @@ import javax.servlet.http.HttpSession;
 public class UserPageController {
     @RequestMapping(value = {"/guest/main"})
     public ModelAndView goMobileGuestMain(HttpServletRequest request) throws Exception {
-        /*String app = request.getParameter("app");
-        if ( app != null && app.equals("atchar")) {
-            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            HttpSession session= attr.getRequest().getSession(true);
-            session.setAttribute("app", app);
-        }*/
-
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/guest/main.html");
         return mav;
     }
 
     @RequestMapping(value = {"/member/item"})
     public ModelAndView goMobileGuestItem(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/member/item.html");
         return mav;
     }
 
     @RequestMapping(value = {"/member/etcitem"})
     public ModelAndView goMobileGuestEtcItem(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/member/etcitem.html");
         return mav;
     }
 
     @RequestMapping(value = {"/member/manage"})
     public ModelAndView goMobileManage(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/member/manage.html");
         return mav;
     }
 
     @RequestMapping(value = {"/member/eb_manage"})
     public ModelAndView goMobileEtcManage(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/member/eb_manage.html");
         return mav;
     }
 
     @RequestMapping(value = {"/member/mypage"})
     public ModelAndView goMobileMypage(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/member/mypage.html");
         return mav;
     }

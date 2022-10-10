@@ -13,21 +13,36 @@ import javax.servlet.http.HttpServletRequest;
 public class UserLoginController {
     @RequestMapping(value = "/login")
     public ModelAndView goLogin(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/guest/regist.html");
         return mav;
     }
 
     @RequestMapping(value = "/accessDenied")
     public ModelAndView goAccessDenied(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/guest/accessDenied.html");
         return mav;
     }
 
     @RequestMapping(value = "/logoutAfter")
     public ModelAndView goLogout(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
         mav.setViewName("content/mobile/guest/regist.html");
         return mav;
     }
