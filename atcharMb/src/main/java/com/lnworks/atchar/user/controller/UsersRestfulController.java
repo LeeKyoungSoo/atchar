@@ -4,17 +4,25 @@ import com.lnworks.atchar.security.CustomEncrypt;
 import com.lnworks.atchar.user.domain.UsersVO;
 import com.lnworks.atchar.user.service.UsersService;
 import com.lnworks.atchar.util.MailSend;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/usersApi")
 public class UsersRestfulController {
@@ -23,6 +31,24 @@ public class UsersRestfulController {
 
     @Autowired
     MailSend mailSend;
+
+    @GetMapping("/login/success")
+    public ResponseEntity loginSuccess(HttpServletRequest request) {
+        log.info("로그인 성공");
+        Map<String,Object> map = new HashMap<>();
+        map.put("result", "success");
+        map.put("message", "아부품 앱에 로그인 되셨습니다.");
+        return new ResponseEntity(map, HttpStatus.OK);
+    }
+
+    @GetMapping("/login/fail")
+    public ResponseEntity loginFail(HttpServletRequest request) {
+        log.info("로그인 실패");
+        Map<String,Object> map = new HashMap<>();
+        map.put("result", "faile");
+        map.put("message", "아부품 앱 로그인에 실패하였습니다.");
+        return new ResponseEntity(map, HttpStatus.OK);
+    }
 
     @PostMapping("/dataList")
     public HashMap goDataList(UsersVO vo) throws Exception {

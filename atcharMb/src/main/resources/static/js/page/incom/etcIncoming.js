@@ -209,13 +209,14 @@ let Ebmng = {
                         useyn = "노출안함";
                     }
                     let fileSavename = "";
+                    let thumbName = "thumb_";
                     if ( rowData[key].fileList.length > 0 ) {
                         fileSavename = rowData[key].fileList[0].fileSaveNm;
-
+                        thumbName = thumbName + fileSavename;
                         $("#rowlist").append(
                             '<ons-list-item onclick="Ebmng.detailView(' + key + ');">\n' +
                             '  <div class="left" >\n' +
-                            '       <img class="list-item__thumbnail item_list_img" src="/fileUpDownApi/display?filename=' + fileSavename + '">\n' +
+                            '       <img class="list-item__thumbnail item_list_img" src="/fileUpDownApi/display?filename=' + thumbName + '">\n' +
                             '  </div>\n' +
                             '  <div class="center item_list_left">\n' +
                             '       <span class="list-item__title">' + rowData[key].itemnm + '&nbsp;&nbsp;<span style="color:red">(' + useyn + ')</span>' + '</span>' +
@@ -227,7 +228,7 @@ let Ebmng = {
                         $("#rowlist").append(
                             '<ons-list-item onclick="Ebmng.detailView(' + key + ');">\n' +
                             '  <div class="left" >\n' +
-                            '       <!--<img class="list-item__thumbnail" src="/fileUpDownApi/display?filename=' + fileSavename + '">-->\n' +
+                            '       <!--<img class="list-item__thumbnail" src="/fileUpDownApi/display?filename=' + thumbName + '">-->\n' +
                             '  </div>\n' +
                             '  <div class="center item_list_left">\n' +
                             '       <span class="list-item__title">' + rowData[key].itemnm + '&nbsp;&nbsp;<span style="color:red">(' + useyn + ')</span>' + '</span>' +

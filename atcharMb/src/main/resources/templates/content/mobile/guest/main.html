@@ -86,7 +86,23 @@
 
             <th:block th:if="${session['userLv']} == null ">
             <section style="padding: 8px 8px">
-                <ons-button modifier="large" style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;" onclick="fn.pageurl('/mobile/guest/login')">로그인</ons-button>
+                <th:block th:if="${session['app']} != null ">
+                    <!--<ons-button
+                            modifier="large"
+                            style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;"
+                            onclick="android.goToAppLogin()">로그인
+                    </ons-button>-->
+                    <ons-button modifier="large"
+                                style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;"
+                                onclick="fn.pageurl('/mobile/guest/login')">로그인
+                    </ons-button>
+                </th:block>
+                <th:block th:unless="${session['app']} != null ">
+                    <ons-button modifier="large"
+                                style="height:50px;line-height: 50px;border-radius:8px;font-size:16px;background-color:#4077f6;color:#ffffff;font-weight: 700;"
+                                onclick="fn.pageurl('/mobile/guest/login')">로그인
+                    </ons-button>
+                </th:block>
             </section>
             </th:block>
 

@@ -18,6 +18,10 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     ZerockUserService zerockUserService;
 
 
@@ -47,7 +51,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasRole("M").and()
             .formLogin()
                 .loginPage("/mobile/guest/login")
-                .defaultSuccessUrl("/mobile/member/item?start=Y").and()
+                .loginProcessingUrl("/usersApi/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .successHandler(customAuthenticationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler)
+                .and()
             .exceptionHandling()
                 .accessDeniedPage("/mobile/guest/main").and()
             .logout()
@@ -59,8 +68,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .key("uniqueAndSecret")
                 .userDetailsService(zerockUserService)
                 .tokenRepository(getTokenSeries())
-                .tokenValiditySeconds(60*60*24*10).and()
+                .tokenValiditySeconds(60*60*24*10).and();
+
+        http
+            .sessionManagement()
+            .maximumSessions(1)
+            .maxSessionsPreventsLogin(false)
+        ;
+
+        http
             .csrf().disable().anonymous();
+
         //http.cors().and();
     }
 

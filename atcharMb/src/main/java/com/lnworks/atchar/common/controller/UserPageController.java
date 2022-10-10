@@ -3,9 +3,12 @@ package com.lnworks.atchar.common.controller;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @Log
@@ -13,6 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 public class UserPageController {
     @RequestMapping(value = {"/guest/main"})
     public ModelAndView goMobileGuestMain(HttpServletRequest request) throws Exception {
+        /*String app = request.getParameter("app");
+        if ( app != null && app.equals("atchar")) {
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+            HttpSession session= attr.getRequest().getSession(true);
+            session.setAttribute("app", app);
+        }*/
+
         ModelAndView mav = new ModelAndView();
         mav.setViewName("content/mobile/guest/main.html");
         return mav;

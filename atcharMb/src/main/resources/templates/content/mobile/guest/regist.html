@@ -90,27 +90,50 @@
                 <template id="tab1.html">
                     <ons-page>
                         <div style="text-align: center; margin-top: 30px;">
-                        <form id="loginFrm" method="post" class="user">
+                        <form id="loginFrm" method="post" class="user" action="/usersApi/login">
                             <div id="login_info">
                                 [안내]<br>
                                 회원가입하시 상품 검색 이용이 가능합니다. <br>
                                 상품등록 권한을 원하시면, 회원가입 후 추가 가입항목을
                                 입력해 주십시오.
                             </div>
-                            <p>
-                                <ons-input id="username" name="username" modifier="underbar" placeholder="아이디(email주소)" float></ons-input>
-                            </p>
-                            <p>
-                                <ons-input id="password" name="password" modifier="underbar" type="password" placeholder="비밀번호" float></ons-input>
-                            </p>
-                            <p>
-                                <input type="checkbox" id="remember-me" name="remember-me"
-                                    style="width:20px;height:20px"> 자동 로그인
-                            </p>
 
-                            <p style="margin-top: 30px;">
-                                <ons-button class="selbox_btn" onclick="login()">로그인</ons-button>
-                            </p>
+                            <th:block th:if="${session['app']} != null ">
+                                <p>
+                                    <ons-input id="username" name="username" modifier="underbar" placeholder="아이디(email주소)" float></ons-input>
+                                </p>
+                                <p>
+                                    <ons-input id="password" name="password" modifier="underbar" type="password" placeholder="비밀번호" float></ons-input>
+                                </p>
+                                <p>
+                                    <input type="checkbox" id="remember-me" name="remember-me"
+                                           style="width:20px;height:20px"> 자동 로그인
+                                </p>
+                                <p style="margin-top: 30px;">
+                                    <ons-button class="selbox_btn" onclick="login()">로그인</ons-button>
+                                </p>
+                               <!-- <p style="margin-top: 30px;">
+                                    <ons-button
+                                            class="selbox_btn"
+                                            onclick="android.goToAppLogin()">로그인
+                                    </ons-button>
+                                </p>-->
+                            </th:block>
+                            <th:block th:unless="${session['app']} != null ">
+                                <p>
+                                    <ons-input id="username" name="username" modifier="underbar" placeholder="아이디(email주소)" float></ons-input>
+                                </p>
+                                <p>
+                                    <ons-input id="password" name="password" modifier="underbar" type="password" placeholder="비밀번호" float></ons-input>
+                                </p>
+                                <p>
+                                    <input type="checkbox" id="remember-me" name="remember-me"
+                                           style="width:20px;height:20px"> 자동 로그인
+                                </p>
+                                <p style="margin-top: 30px;">
+                                    <ons-button class="selbox_btn" onclick="login()">로그인</ons-button>
+                                </p>
+                            </th:block>
                         </form>
                         </div>
                         <div class="empty_hi"></div>

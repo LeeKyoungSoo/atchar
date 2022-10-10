@@ -25,7 +25,7 @@ public class UserLoginController {
         return mav;
     }
 
-    @RequestMapping(value = "/logout")
+    @RequestMapping(value = "/logoutAfter")
     public ModelAndView goLogout(HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("content/mobile/guest/regist.html");

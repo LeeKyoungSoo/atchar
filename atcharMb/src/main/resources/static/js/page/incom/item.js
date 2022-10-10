@@ -81,7 +81,7 @@ let ItemAtchar = {
         if ( code == undefined ) {
             code = 0;
         }
-debugger;
+//debugger;
         if ( "" + code == "" ) {
             code = itemListConfig.gCode;
             itemListConfig.pageNum += 1;
