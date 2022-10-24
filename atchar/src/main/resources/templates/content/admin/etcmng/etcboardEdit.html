@@ -82,11 +82,6 @@
                         </li>
                         <li class="li_sp">
                             <textarea class="form-control" id="cont" name="cont"></textarea>
-                            <script type="text/javascript">
-                                CKEDITOR.replace('cont' , {
-                                    height: 520
-                                });
-                            </script>
                         </li>
                         <!--
                         <li class="li_sp">
@@ -156,6 +151,10 @@
                     $("#notiYn").val("N");
                 }
             });
+
+            CKEDITOR.replace('cont' , {
+                height: 520
+            });
         });
 
         function goDataView() {
@@ -165,14 +164,13 @@
                 type: 'post',
                 data: param,
                 success: function (data) {
-                    console.log(data.dataView);
                     if (data.dataView == null || data.dataView == "" ) {
                         alert("잘못된 접근 입니다.");
                         goList();
                     }
                     else {
+                        console.log(data.dataView);
                         $("#subject").val(data.dataView.subject);
-                        $("#cont").val(data.dataView.cont);
                         $("#regId").val(data.dataView.regId);
                         $("#regNm").val(data.dataView.regNm);
                         //$("#regDt").val(data.dataView.regDt);
@@ -188,6 +186,7 @@
                         if ( data.dataView.fileList.length > 0 ) {
                             FileListTable(data.dataView.fileList);
                         }
+                        $("#cont").val(data.dataView.cont);
                     }
                 },
                 error: function (data) {

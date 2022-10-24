@@ -402,16 +402,6 @@ let Member = {
             return false;
         }
 
-        if ( $("#prvacc").val() != "Y" ) {
-            modal({
-                type: 'error',
-                title: 'error',
-                text: '개인정보노출에 동의해 주십시오.'
-            });
-            $("#prvaccyn").focus();
-            return false;
-        }
-
         if ( $("#yacacc").val() != "Y" ) {
             modal({
                 type: 'error',
@@ -432,6 +422,15 @@ let Member = {
             return false;
         }
 
+        // if ( $("#prvacc").val() != "Y" ) {
+        //     modal({
+        //         type: 'error',
+        //         title: 'error',
+        //         text: '개인정보노출에 동의해 주십시오.'
+        //     });
+        //     $("#prvaccyn").focus();
+        //     return false;
+        // }
         return true;
     },
 

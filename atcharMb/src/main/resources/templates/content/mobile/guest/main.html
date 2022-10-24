@@ -136,9 +136,28 @@
             </section>
             </th:block>
 
+            <div class="info_pd">
+                <br>- 고객센터 문의 pcs6741@naver.com
+                <br>- <span onclick="yacView();">이용약관 [보기]</span>
+                <br>- <span onclick="personalDataView();">개인정보 처리방침 [보기]</span>
+                <br>
+                <br>
+                <br>주식회사 모빌리티크루 대표이사 박창순
+                <br>용인시 처인구 명지로 116 명지대학교 창업보육센터 18109-5
+                <br>전화문의 0507-***-****
+                <br>이메일 pcs6741@naver.com
+                <br>사업자등록번호 836-87-02510
+                <br>통신판매신고 제 ******호
+                <br>호스팅서비스 제공자 주식회사 모빌리티크루
+                <br>개인정보 책임자 박창순
+                <div style="height:100px"></div>
+            </div>
         </div>
     </ons-page>
 </template>
+
+    <ons-page id="Tab2-VIEW">
+    </ons-page>
 
 </th:block>
 
@@ -184,9 +203,56 @@
     </script>
     <script>
         $(document).ready(function () {
+            $("#Tab2-VIEW").hide();
             Common.goBoardView('001220314235249' ,'introView');
             Common.goBoardView('001220314104608' ,'infoView');
         });
+
+        yacView = function() {
+            boardView("001220314101959","약관동의");
+        };
+
+        personalDataView = function() {
+            boardView("001221023224905","개인정보 처리방침");
+        };
+
+        boardView = function (bbsCd, title) {
+            $.ajax({
+                url:'/bbsApi/bbsDataView',
+                type: 'post',
+                data: {
+                    bId : bbsCd
+                },
+                success: function (data) {
+                    detailView(title, data.dataView.cont);
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+        };
+
+        detailView = function (title, cont) {
+            $("#Tab2-VIEW").empty();
+            $("#Tab2-VIEW").append('<ons-toolbar>\n' +
+                '           <div class="center" style="font-size: 16px;">' + title + '</div>\n' +
+                '        </ons-toolbar>\n' +
+                '        <ons-card class="card_op">\n' +
+                '            <p class="btn_magin">\n' +
+                '                <ons-button class="selbox_100" onclick="dataclose();">닫기</ons-button>\n' +
+                '            </p>\n' +
+                '            <div class="content">\n' +
+                '                <ons-list>\n' +
+                '                    <ons-list-item>' + cont +  '</ons-list-item>\n' +
+                '                </ons-list>\n' +
+                '            </div>\n' +
+                '        </ons-card>');
+            $("#Tab2-VIEW").show();
+        };
+
+        dataclose = function () {
+            $("#Tab2-VIEW").hide();
+        };
     </script>
     <th:block th:if="${param.active != null}">
         <script>

@@ -181,13 +181,6 @@
 
                                 <div style="width: 100%;text-align: center">
                                     <div style="display:inline-block;width: 90%">
-                                        <div style="float: left;"><span>개인정보노출동의</span></div>
-                                        <div style="float: right;"><ons-switch input-id="prvaccyn" onchange="prvaccChg();"></ons-switch></div>
-                                    </div>
-                                </div>
-
-                                <div style="width: 100%;text-align: center">
-                                    <div style="display:inline-block;width: 90%">
                                         <div style="float: left;" onclick="yacView();"><span>약관동의</span>[보기]</div>
                                         <div style="float: right;"><ons-switch input-id="yacaccyn" onchange="yacaccChg();"></ons-switch></div>
                                     </div>
@@ -197,6 +190,13 @@
                                     <div style="display:inline-block;width: 90%">
                                         <div style="float: left;" onclick="useaccView();"><span>개인정보 수집 및 이용동의</span>[보기]</div>
                                         <div style="float: right;"><ons-switch input-id="useaccyn" onchange="useaccChg();"></ons-switch></div>
+                                    </div>
+                                </div>
+
+                                <div style="width: 100%;text-align: center">
+                                    <div style="display:inline-block;width: 90%">
+                                        <div style="float: left;" onclick="marketView();"><span>마케팅 수신 동의(선택) [보기]</span></div>
+                                        <div style="float: right;"><ons-switch input-id="prvaccyn" onchange="prvaccChg();"></ons-switch></div>
                                     </div>
                                 </div>
 
@@ -298,6 +298,10 @@
 
         useaccView =  function() {
             boardView("001220315005518","개인정보 수집 및 이용동의");
+        };
+
+        marketView = function () {
+            boardView("001221023224752","마케팅 수신 동의");
         };
 
         prvaccChg = function() {

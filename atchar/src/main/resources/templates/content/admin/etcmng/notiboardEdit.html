@@ -94,11 +94,6 @@
                         </li>
                         <li class="li_sp">
                             <textarea class="form-control" id="cont" name="cont"></textarea>
-                            <script type="text/javascript">
-                                CKEDITOR.replace('cont' , {
-                                    height: 520
-                                });
-                            </script>
                         </li>
                         <li class="li_sp">
                             <ul class="ul_box">
@@ -165,6 +160,10 @@
                 else {
                     $("#notiYn").val("N");
                 }
+            });
+
+            CKEDITOR.replace('cont' , {
+                height: 520
             });
         });
 
