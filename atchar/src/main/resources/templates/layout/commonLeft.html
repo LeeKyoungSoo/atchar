@@ -31,9 +31,7 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!--<h6 class="collapse-header">Custom Components:</h6>-->
-                    <a class="collapse-item" href="/admin/incom/incomjego">판매현황</a>
-                    <a class="collapse-item" href="/admin/incom/incoming">판매현황</a>
-                    <a class="collapse-item" href="/admin/incom/release">판매현황</a>
+                    <a class="collapse-item" href="/admin/incom/incomjego">준비중</a>
                 </div>
             </div>
         </li>
@@ -93,11 +91,11 @@
         </div>
 
         <!-- Sidebar Message -->
-        <!--<div class="sidebar-card">
+        <div class="sidebar-card">
             <img class="sidebar-card-illustration mb-2"  th:src="@{/img/undraw_rocket.svg}" alt="">
-            <p class="text-center mb-2"><strong>AE관리시스템</strong>  개발진행중</p>
-            <a class="btn btn-success btn-sm" th:href="@{/aemonitor/examApiTest}">API TEST</a>
-        </div>-->
+            <p class="text-center mb-2">개인정보처리방침</p>
+            <a class="btn btn-success btn-sm" th:href="@{/guest/personalData}">내용보기</a>
+        </div>
     </ul>
     <!-- End of Sidebar -->
 
@@ -146,10 +144,13 @@
                     <div class="topbar-divider d-none d-sm-block"></div>
 
                     <!-- Nav Item - User Information -->
+                    <th:block th:if="${session['userNm'] != null }">
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small"><span th:text="${session['userNm']}" /></span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                <span th:text="${session['userNm']}" />
+                            </span>
                             <img class="img-profile rounded-circle"
                                  th:src="@{/img/undraw_profile.svg}">
                         </a>
@@ -175,7 +176,7 @@
                             </a>
                         </div>
                     </li>
-
+                    </th:block>
                 </ul>
 
             </nav>

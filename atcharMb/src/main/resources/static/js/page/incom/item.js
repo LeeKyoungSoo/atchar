@@ -228,11 +228,11 @@ let ItemAtchar = {
         }
 
         if ( gv_logData[key].mountyn != "" ) {
-            mountyn = '<ons-list-item>장착가능여부 : ' + gv_logData[key].mountyn +  '</ons-list-item>\n';
+            mountyn = '<ons-list-item>장착가능여부 : ' + ItemAtchar.changeCodeToValue(gv_logData[key].mountyn) +  '</ons-list-item>\n';
         }
 
         if ( gv_logData[key].coloryn != "" ) {
-            coloryn = '<ons-list-item>도색가능여부 : ' + gv_logData[key].coloryn +  '</ons-list-item>\n';
+            coloryn = '<ons-list-item>도색가능여부 : ' + ItemAtchar.changeCodeToValue(gv_logData[key].coloryn) +  '</ons-list-item>\n';
         }
 
         if ( gv_logData[key].memo != "" ) {
@@ -280,6 +280,14 @@ let ItemAtchar = {
         ItemAtchar.ClickItemLogAdd(gv_logData[key].incomcd);
         ItemAtchar.fileListView(gv_logData[key].incomcd);
         ItemAtchar.MyItemYn(gv_logData[key].incomcd);
+    },
+
+    changeCodeToValue : function(code) {
+        if ( code == "Y" ) {
+            return "가능";
+        } else {
+            return "불가능";
+        }
     },
 
     dataclose : function () {

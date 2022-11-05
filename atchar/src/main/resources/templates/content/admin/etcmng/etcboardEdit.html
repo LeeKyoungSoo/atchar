@@ -81,6 +81,7 @@
                             </ul>
                         </li>
                         <li class="li_sp">
+<!--                            <span onclick="reloadCont();" style="cursor:pointer">[다시불러오기]</span>-->
                             <textarea class="form-control" id="cont" name="cont"></textarea>
                         </li>
                         <!--
@@ -124,6 +125,7 @@
     <script th:src="@{/js/com/util.js}" type="text/javascript"></script>
     <script th:src="@{/js/com/board.js}" type="text/javascript"></script>
     <script lang="javascript">
+        let contData = "";
         $(document).ready(function () {
             if ( $("#bId").val() != "" ) {
                 goDataView();
@@ -140,7 +142,8 @@
 
                 $("#bId").val($("#gubun").val() + Util.getToday());
                 $("#f_bId").val($("#bId").val());
-                console.log($("#bId").val());
+                //console.log($("#bId").val());
+                reloadCont()
             }
 
             $("#notiYnChk").change(function() {
@@ -151,11 +154,14 @@
                     $("#notiYn").val("N");
                 }
             });
-
-            CKEDITOR.replace('cont' , {
-                height: 520
-            });
         });
+
+        function reloadCont() {
+            CKEDITOR.replace('cont' , {
+               height: 520
+            });
+            $("#cont").val(contData);
+        }
 
         function goDataView() {
             let param = $("form[name=metadataFrm]").serialize();
@@ -186,7 +192,8 @@
                         if ( data.dataView.fileList.length > 0 ) {
                             FileListTable(data.dataView.fileList);
                         }
-                        $("#cont").val(data.dataView.cont);
+                        contData = data.dataView.cont;
+                        reloadCont();
                     }
                 },
                 error: function (data) {

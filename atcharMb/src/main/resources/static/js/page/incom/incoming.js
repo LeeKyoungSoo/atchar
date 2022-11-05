@@ -343,8 +343,8 @@ let Incoming = {
             '                    <ons-list-item>가격 : ' + gv_logData[key].price +  '</ons-list-item>\n' +
             '                    <ons-list-item>파트넘버 : ' + gv_logData[key].partnum +  '</ons-list-item>\n' +
             '                    <ons-list-item>차대번호 : ' + gv_logData[key].vinnum +  '</ons-list-item>\n' +
-            '                    <ons-list-item>장착가능여부 : ' + gv_logData[key].mountyn +  '</ons-list-item>\n' +
-            '                    <ons-list-item>도색가능여부 : ' + gv_logData[key].coloryn +  '</ons-list-item>\n' +
+            '                    <ons-list-item>장착가능여부 : ' + Incoming.changeCodeToValue(gv_logData[key].mountyn) +  '</ons-list-item>\n' +
+            '                    <ons-list-item>도색가능여부 : ' + Incoming.changeCodeToValue(gv_logData[key].coloryn) +  '</ons-list-item>\n' +
             '                    <ons-list-item>' + gv_logData[key].memo +  '</ons-list-item>\n' +
             '                </ons-list>\n' +
             '            </div>\n' +
@@ -359,6 +359,14 @@ let Incoming = {
         $("#Tab2-VIEW").show();
 
         Incoming.fileListView(gv_logData[key].incomcd, "view");
+    },
+
+    changeCodeToValue : function(code) {
+       if ( code == "Y" ) {
+           return "가능";
+       } else {
+           return "불가능";
+       }
     },
 
     dataclose : function () {

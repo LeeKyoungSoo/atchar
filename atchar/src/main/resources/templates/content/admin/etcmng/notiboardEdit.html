@@ -150,7 +150,8 @@
 
                 $("#bId").val($("#gubun").val() + Util.getToday());
                 $("#f_bId").val($("#bId").val());
-                console.log($("#bId").val());
+                //console.log($("#bId").val());
+                reloadCont();
             }
 
             $("#notiYnChk").change(function() {
@@ -161,11 +162,14 @@
                     $("#notiYn").val("N");
                 }
             });
+        });
 
+        function reloadCont() {
             CKEDITOR.replace('cont' , {
                 height: 520
             });
-        });
+            $("#cont").val(contData);
+        }
 
         function goDataView() {
             let param = $("form[name=metadataFrm]").serialize();
@@ -181,7 +185,7 @@
                     }
                     else {
                         $("#subject").val(data.dataView.subject);
-                        $("#cont").val(data.dataView.cont);
+                        //$("#cont").val(data.dataView.cont);
                         $("#regId").val(data.dataView.regId);
                         $("#regNm").val(data.dataView.regNm);
                         //$("#regDt").val(data.dataView.regDt);
@@ -197,6 +201,9 @@
                         if ( data.dataView.fileList.length > 0 ) {
                             FileListTable(data.dataView.fileList);
                         }
+
+                        contData = data.dataView.cont;
+                        reloadCont();
                     }
                 },
                 error: function (data) {
