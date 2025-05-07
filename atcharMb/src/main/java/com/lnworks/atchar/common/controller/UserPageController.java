@@ -26,6 +26,18 @@ public class UserPageController {
         return mav;
     }
 
+    @RequestMapping(value = {"/guest/info"})
+    public ModelAndView goMobileGuestInfo(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
+        mav.setViewName("content/mobile/guest/info.html");
+        return mav;
+    }
+
     @RequestMapping(value = {"/member/item"})
     public ModelAndView goMobileGuestItem(HttpServletRequest request) throws Exception {
         String device = "web";
@@ -50,6 +62,18 @@ public class UserPageController {
         return mav;
     }
 
+    @RequestMapping(value = {"/member/caritem"})
+    public ModelAndView goMobileGuestCarItem(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
+        mav.setViewName("content/mobile/member/caritem.html");
+        return mav;
+    }
+
     @RequestMapping(value = {"/member/manage"})
     public ModelAndView goMobileManage(HttpServletRequest request) throws Exception {
         String device = "web";
@@ -71,6 +95,18 @@ public class UserPageController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("device", device);
         mav.setViewName("content/mobile/member/eb_manage.html");
+        return mav;
+    }
+
+    @RequestMapping(value = {"/member/carmanage"})
+    public ModelAndView goMobileCarManage(HttpServletRequest request) throws Exception {
+        String device = "web";
+        if ( request.getHeader("app-device") != null) {
+            device = request.getHeader("app-device");
+        }
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("device", device);
+        mav.setViewName("content/mobile/member/car_manage.html");
         return mav;
     }
 

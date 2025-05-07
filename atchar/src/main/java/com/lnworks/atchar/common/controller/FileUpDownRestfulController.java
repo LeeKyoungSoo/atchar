@@ -64,7 +64,10 @@ public class FileUpDownRestfulController {
         FileUpDownVO fileUpDownVO = new FileUpDownVO();
         fileUpDownVO.setFId(fid);
         fileUpDownVO = fileUpDownService.getFileData(fileUpDownVO);
-        fileDownPath += File.separator + "BBS" + File.separator + fileUpDownVO.getFileSaveNm();
+
+        String subDir = fileUpDownVO.getFileSaveNm().substring(0, 8);
+        fileDownPath += File.separator + "BBS" + File.separator + subDir + File.separator + fileUpDownVO.getFileSaveNm();
+
         Path path = Paths.get(fileDownPath);
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         String fileNameOrg = new String(fileUpDownVO.getFileOrgNm().getBytes("UTF-8"), "ISO-8859-1");

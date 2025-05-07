@@ -35,5 +35,16 @@ let Common = {
                 console.log(data);
             }
         });
-    }
+    },
+
+    addURLParameter : function (url, key, value) {
+        let separator = url.includes('?') ? '&' : '?';
+        return url + separator + encodeURIComponent(key) + '=' + encodeURIComponent(value);
+    },
+
+    removeURLParameter : function (url, param) {
+        let urlObj = new URL(url);
+        urlObj.searchParams.delete(param);
+        return urlObj.toString();
+    },
 }

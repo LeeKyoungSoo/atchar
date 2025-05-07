@@ -26,11 +26,7 @@ let ItemAtchar = {
 
     btn_search : function (code) {
         if ( code == 3) {
-            $("#itemcd").val("");
-            $("#makecd").val("");
-            $("#carcd").val("");
-            $("#modelcd").val("");
-            $("#yearcd").val("");
+            $("#s_itemnm").val("");
             $("#areasicd").val("");
             $("#areagucd").val("");
             code = 0;
@@ -67,21 +63,12 @@ let ItemAtchar = {
         }
     },
 
-    /**
-     * 바디 상품 목록 가져오기
-     *
-     * @function goDataList
-     * @param {number} code [0:바디검색목록][1:관심목록][2:최근검색]
-     * @returns
-     * @author lnworks
-     * @lastupdate 2022.09.30
-     */
     goDataList : function (code, gubun) {
         //debugger;
         if ( code == undefined ) {
             code = 0;
         }
-//debugger;
+
         if ( "" + code == "" ) {
             code = itemListConfig.gCode;
             itemListConfig.pageNum += 1;
@@ -97,11 +84,11 @@ let ItemAtchar = {
 
         let url;
         if ( code == 1 ) {
-            url = "/incom/incomingApi/myAttentionDataList";
+            url = "/incom/carItemApi/myAttentionDataList";
         } else if ( code == 2 ) {
-            url = "/incom/incomingApi/clickDataList";
+            url = "/incom/carItemApi/clickDataList";
         } else {
-            url = "/incom/incomingApi/dataList";
+            url = "/incom/carItemApi/dataList";
         }
 
         $.ajax({
@@ -144,8 +131,7 @@ let ItemAtchar = {
                                     '  </div>\n' +
                                     '  <div class="center item_list_left">\n' +
                                     '       <span class="list-item__title">' + rowData[key].itemnm + ' <span class="red">(' + '판매중' + ')</span></span>' +
-                                    '       <span class="list-item__subtitle">' + rowData[key].makenm + ' | ' + rowData[key].carnm + ' | ' + rowData[key].yearnm + '연식</span>' +
-                                    '       <span class="list-item__subtitle">모델 : ' + rowData[key].modelnm + '</span>\n' +
+                                    '       <span class="list-item__subtitle">' + rowData[key].memo + '</span>' +
                                     '  </div>\n' +
                                     '</ons-list-item>'
                                 );
@@ -157,8 +143,7 @@ let ItemAtchar = {
                                     '  </div>\n' +
                                     '  <div class="center item_list_left">\n' +
                                     '       <span class="list-item__title gray">' + rowData[key].itemnm + ' <span class="red">(' + '판매완료' + ')</span></span>' +
-                                    '       <span class="list-item__subtitle">' + rowData[key].makenm + ' | ' + rowData[key].carnm + ' | ' + rowData[key].yearnm + '연식</span>' +
-                                    '       <span class="list-item__subtitle">모델 : ' + rowData[key].modelnm + '</span>\n' +
+                                    '       <span class="list-item__subtitle">' + rowData[key].memo + '</span>' +
                                     '  </div>\n' +
                                     '</ons-list-item>'
                                 );
@@ -173,8 +158,7 @@ let ItemAtchar = {
                                     '  </div>\n' +
                                     '  <div class="center item_list_left">\n' +
                                     '       <span class="list-item__title">' + rowData[key].itemnm + ' <span class="red">(' + '판매중' + ')</span></span>' +
-                                    '       <span class="list-item__subtitle">' + rowData[key].makenm + ' | ' + rowData[key].carnm + ' | ' + rowData[key].yearnm + '연식</span>' +
-                                    '       <span class="list-item__subtitle">모델 : ' + rowData[key].modelnm + '</span>\n' +
+                                    '       <span class="list-item__subtitle">' + rowData[key].memo + '</span>' +
                                     '  </div>\n' +
                                     '</ons-list-item>'
                                 );
@@ -186,8 +170,7 @@ let ItemAtchar = {
                                     '  </div>\n' +
                                     '  <div class="center item_list_left">\n' +
                                     '       <span class="list-item__title gray">' + rowData[key].itemnm + ' <span class="red">(' + '판매완료' + ')</span></span>' +
-                                    '       <span class="list-item__subtitle">' + rowData[key].makenm + ' | ' + rowData[key].carnm + ' | ' + rowData[key].yearnm + '연식</span>' +
-                                    '       <span class="list-item__subtitle">모델 : ' + rowData[key].modelnm + '</span>\n' +
+                                    '       <span class="list-item__subtitle">' + rowData[key].memo + '</span>' +
                                     '  </div>\n' +
                                     '</ons-list-item>'
                                 );
@@ -207,37 +190,21 @@ let ItemAtchar = {
         $("#Tab2-VIEW").empty();
 
         let itgu = "";
-        let partnum = "";
-        let vinnum = "";
-        let mountyn = "";
-        let coloryn = "";
         let memo = "";
 
         if ( gv_logData[key].itgu == "R" ) {
             itgu = "재생품";
+        } else if (gv_logData[key].itgu == 'N' ) {
+            itgu = "신제품";
         } else {
             itgu = "중고품";
-        }
-
-        if ( gv_logData[key].partnum != "" ) {
-            partnum = '<ons-list-item>파트넘버 : ' + gv_logData[key].partnum +  '</ons-list-item>\n';
-        }
-
-        if ( gv_logData[key].vinnum != "" ) {
-            vinnum = '<ons-list-item>차대번호 : ' + gv_logData[key].vinnum +  '</ons-list-item>\n';
-        }
-
-        if ( gv_logData[key].mountyn != "" ) {
-            mountyn = '<ons-list-item>장착가능여부 : ' + ItemAtchar.changeCodeToValue(gv_logData[key].mountyn) +  '</ons-list-item>\n';
-        }
-
-        if ( gv_logData[key].coloryn != "" ) {
-            coloryn = '<ons-list-item>도색가능여부 : ' + ItemAtchar.changeCodeToValue(gv_logData[key].coloryn) +  '</ons-list-item>\n';
         }
 
         if ( gv_logData[key].memo != "" ) {
             memo = '<ons-list-item>상세정보 : ' + gv_logData[key].memo +  '</ons-list-item>\n';
         }
+
+        //debugger;
 
         $("#Tab2-VIEW").append('<ons-toolbar>\n' +
             '           <div class="center" style="color: #0e62c7;font-weight: bold">' + gv_logData[key].itemnm + '</div>\n' +
@@ -260,42 +227,39 @@ let ItemAtchar = {
             '            </div>\n' +
             '            <div class="content">\n' +
             '                <ons-list>\n' +
-            '                    <ons-list-header> 차종: ' + gv_logData[key].makenm +  '  ' + gv_logData[key].carnm +  '</ons-list-header>\n' +
-            '                    <ons-list-header>모델 : ' + gv_logData[key].modelnm +  '</ons-list-header>\n' +
-            '                    <ons-list-item>연식 : ' + gv_logData[key].yearnm +  '</ons-list-item>\n' +
             '                    <ons-list-item>지역 : ' + gv_logData[key].areasinm + ' ' + gv_logData[key].areagunm +  '</ons-list-item>\n' +
             '                    <ons-list-item>판매처 : ' + gv_logData[key].comnm +  ' ' +
             '                            <!--&nbsp;&nbsp;&nbsp;&nbsp;<span onclick="ItemAtchar.ViewCom('+ key +');"><img src="/img/cominfo.png" style="width: 36px"></span>-->' +
             '                            &nbsp;&nbsp;&nbsp;&nbsp;<a href="tel:' + gv_logData[key].comphonelink +  '"><img src="/img/tel.png" style="width: 36px"></a></ons-list-item>\n' +
-            '                    ' + partnum + vinnum + mountyn + coloryn + memo +
+            '                    ' + memo +
             '                </ons-list>\n' +
             '            </div>\n' +
             '            <p class="btn_magin">\n' +
             '                <ons-button class="selbox_100" onclick="ItemAtchar.dataclose();">닫기</ons-button>\n' +
             '            </p>\n' +
-            '        </ons-card> ' +
-            '       <div class="empty_hi"></div>');
+            '        </ons-card>');
         $("#Tab2-VIEW").show();
 
         ItemAtchar.ClickItemLogAdd(gv_logData[key].incomcd);
         ItemAtchar.fileListView(gv_logData[key].incomcd);
         ItemAtchar.MyItemYn(gv_logData[key].incomcd);
 
-        android.setDetailView();
-    },
+        //add parameter
+        //let url_href = window.location.href;
+        //let newUrl = Common.addURLParameter(url_href, "detailView", "Y");
+        //console.log(newUrl);
 
-    changeCodeToValue : function(code) {
-        if ( code == "Y" ) {
-            return "가능";
-        } else {
-            return "불가능";
-        }
+        android.setDetailView();
     },
 
     dataclose : function () {
         ItemAtchar.img_banner_End();
         $("#Tab2-VIEW").hide();
 
+        //remove parameter
+        //let url_href = window.location.href;
+        //let newUrl = Common.removeURLParameter(url_href, "detailView");
+        //console.log(newUrl);
         android.setDetailViewClose();
     },
 
@@ -361,8 +325,7 @@ let ItemAtchar = {
             data: {},
             success: function (data) {
                 if ( data.result > 0 ) {
-                   //fn.pageurl('/mobile/member/manage?active=success');
-                    fn.pageurl('/mobile/guest/login');
+                   fn.pageurl('/mobile/member/manage?active=success');
                 }
             },
             error: function (data) {
@@ -387,6 +350,24 @@ let ItemAtchar = {
             }
         });
     },
+
+    /*
+    IMG_FileListTable : function(data) {
+        $("#img_file_list").empty();
+        let strHtml = "";
+        let resultList = data ;
+        if(resultList && resultList.length > 0) {
+            for(let i=0; i<resultList.length; i++) {
+                let retObj = resultList[i];
+                strHtml = strHtml + "<li class='ulist_w_33'>";
+                strHtml = strHtml + "   <a href='/fileUpDownApi/fileDownloadId/" + retObj.fid + "'>" +
+                    "<img class='itemImg' src='/fileUpDownApi/display?filename=" + "" + retObj.fileSaveNm + "' style='width:100px;height:100px' /></a>";
+                strHtml = strHtml + "</li>";
+            }
+        }
+        $("#img_file_list").html(strHtml);
+    },
+    */
 
     IMG_FileListTable : function(data) {
         $("#img_file_list").empty();
@@ -421,7 +402,7 @@ let ItemAtchar = {
         $("#img_file_list").html("<ul>" + strHtml + "</ul>");
 
         if ( resultList.length > 1 ) {
-            //ItemAtchar.img_banner_int();
+            ItemAtchar.img_banner_int();
         }
     },
     */
@@ -459,7 +440,7 @@ let ItemAtchar = {
     ClickItemLogAdd : function(code) {
         console.log("ClickItemLogAdd : " + code);
         $.ajax({
-            url:'/incom/incomingApi/clickitemIns',
+            url:'/incom/carItemApi/clickitemIns',
             type: 'post',
             data: {
                 incomcd : code,
@@ -476,7 +457,7 @@ let ItemAtchar = {
 
     MyItemLogAdd : function(code) {
         $.ajax({
-            url:'/incom/incomingApi/myitemIns',
+            url:'/incom/carItemApi/myitemIns',
             type: 'post',
             data: {
                 incomcd : code
@@ -498,7 +479,7 @@ let ItemAtchar = {
 
     MyItemLogDel : function(code) {
         $.ajax({
-            url:'/incom/incomingApi/myitemDel',
+            url:'/incom/carItemApi/myitemDel',
             type: 'post',
             data: {
                 incomcd : code
@@ -520,7 +501,7 @@ let ItemAtchar = {
 
     MyItemYn : function(code) {
         $.ajax({
-            url:'/incom/incomingApi/myitemYn',
+            url:'/incom/carItemApi/myitemYn',
             type: 'post',
             data: {
                 incomcd : code
@@ -541,7 +522,6 @@ let ItemAtchar = {
     },
 
     ViewOption : function (key) {
-        debugger;
         let incomcd = gv_logData[key].incomcd;
         let useyn = $("#viewOpt").is(":checked");
         if ( useyn ) {

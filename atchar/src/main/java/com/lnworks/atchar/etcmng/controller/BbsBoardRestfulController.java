@@ -66,7 +66,10 @@ public class BbsBoardRestfulController {
         BoardFileVO boardFileVO = new BoardFileVO();
         boardFileVO.setFId(fid);
         boardFileVO = bbsBoardService.getFileData(boardFileVO);
-        fileDownPath += File.separator + "BBS" + File.separator + boardFileVO.getFileSaveNm();
+
+        String subDir = boardFileVO.getFileSaveNm().substring(0, 8);
+        fileDownPath += File.separator + "BBS" + File.separator + subDir + File.separator + boardFileVO.getFileSaveNm();
+
         Path path = Paths.get(fileDownPath);
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         String fileNameOrg = new String(boardFileVO.getFileOrgNm().getBytes("UTF-8"), "ISO-8859-1");
@@ -112,7 +115,8 @@ public class BbsBoardRestfulController {
                 boardFileVO.setFId(nFid);
                 boardFileVO = bbsBoardService.getFileData(boardFileVO);
 
-                String fileNameSave = fileDownPathSub+ File.separator + boardFileVO.getFileSaveNm();
+                String subSecDir = boardFileVO.getFileSaveNm().substring(0, 8);
+                String fileNameSave = fileDownPathSub+ File.separator + subSecDir + File.separator + boardFileVO.getFileSaveNm();
                 String fileNameOrg = boardFileVO.getFileOrgNm();
                 //String fileNameOrg = new String(boardFileVO.getFileOrgNm().getBytes("UTF-8"), "ISO-8859-1");
                 in = new FileInputStream(fileNameSave); //압축 대상 파일

@@ -69,7 +69,9 @@ public class FileUpDownRestfulController {
         FileUpDownVO fileUpDownVO = new FileUpDownVO();
         fileUpDownVO.setFId(fid);
         fileUpDownVO = fileUpDownService.getFileData(fileUpDownVO);
-        fileDownPath += File.separator + "BBS" + File.separator + fileUpDownVO.getFileSaveNm();
+
+        String subDir = fileUpDownVO.getFileSaveNm().substring(0, 8);
+        fileDownPath += File.separator + "BBS" + File.separator + subDir + File.separator + fileUpDownVO.getFileSaveNm();
         Path path = Paths.get(fileDownPath);
         Resource resource = new InputStreamResource(Files.newInputStream(path));
         String fileNameOrg = new String(fileUpDownVO.getFileOrgNm().getBytes("UTF-8"), "ISO-8859-1");
@@ -143,14 +145,14 @@ public class FileUpDownRestfulController {
         }
     }
 
-    @PostMapping("/fileUpload")
-    public HashMap goBbsFileUpload(final MultipartHttpServletRequest multiRequest) throws Exception {
-        HashMap resultMap = new HashMap<>();
+    @PostMapping(value="/fileUpload", consumes="multipart/form-data")
+    public HashMap<String, Object>  goBbsFileUpload(MultipartHttpServletRequest multiRequest) throws Exception {
+        HashMap<String, Object> resultMap = new HashMap<>();
         String fileDownPath = OS.contains("win") ? fileDownPathWin : fileDownPathLinux;
         int resultCode = 0;
         BaseMap map = FileUpload.uploadFileMap(multiRequest, fileDownPath, "BBS");
 
-        if (map != null) {
+        if (!map.isEmpty()) {
             List<FileVO> fileList = map.getFileInfo();
             if (fileList != null) {
                 for (FileVO fileVo : fileList) {
@@ -226,6 +228,12 @@ public class FileUpDownRestfulController {
         String fileDownPath = OS.contains("win") ? fileDownPathWin : fileDownPathLinux;
         String pathSe = OS.contains("win") ? "\\" : "/";
         String subDir = "BBS";
+
+        if ( filename.contains("thumb") ) {
+            subDir +=  File.separator + filename.substring(6,14);
+        } else {
+            subDir +=  File.separator + filename.substring(0,8);
+        }
         String fileDownPathSub = fileDownPath + File.separator + subDir + pathSe;
 
         Resource resource = new FileSystemResource(fileDownPathSub + filename);

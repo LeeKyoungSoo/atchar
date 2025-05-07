@@ -635,7 +635,7 @@ let Incoming = {
 
         $.ajax({
             url:'/fileUpDownApi/fileUpload',
-            type:'post',
+            type:'POST',
             enctype: 'multipart/form-data',
             dataType: 'json',
             data: params,
@@ -646,6 +646,9 @@ let Incoming = {
             success:function(data){
                 console.log(data);
                 Incoming.FileListTable(data.fileList);
+            },
+            error: function(xhr, status, error) {
+                console.error("오류 발생:", error);
             }
         });
     },

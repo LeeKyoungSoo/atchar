@@ -243,11 +243,24 @@ let ItemAtchar = {
         ItemAtchar.ClickItemLogAdd(gv_logData[key].incomcd);
         ItemAtchar.fileListView(gv_logData[key].incomcd);
         ItemAtchar.MyItemYn(gv_logData[key].incomcd);
+
+        //add parameter
+        //let url_href = window.location.href;
+        //let newUrl = Common.addURLParameter(url_href, "detailView", "Y");
+        //console.log(newUrl);
+
+        android.setDetailView();
     },
 
     dataclose : function () {
         ItemAtchar.img_banner_End();
         $("#Tab2-VIEW").hide();
+
+        //remove parameter
+        //let url_href = window.location.href;
+        //let newUrl = Common.removeURLParameter(url_href, "detailView");
+        //console.log(newUrl);
+        android.setDetailViewClose();
     },
 
     goCodeList : function (prtId, mstCd, useYn, choiseValue) {
@@ -338,6 +351,7 @@ let ItemAtchar = {
         });
     },
 
+    /*
     IMG_FileListTable : function(data) {
         $("#img_file_list").empty();
         let strHtml = "";
@@ -348,6 +362,23 @@ let ItemAtchar = {
                 strHtml = strHtml + "<li class='ulist_w_33'>";
                 strHtml = strHtml + "   <a href='/fileUpDownApi/fileDownloadId/" + retObj.fid + "'>" +
                     "<img class='itemImg' src='/fileUpDownApi/display?filename=" + "" + retObj.fileSaveNm + "' style='width:100px;height:100px' /></a>";
+                strHtml = strHtml + "</li>";
+            }
+        }
+        $("#img_file_list").html(strHtml);
+    },
+    */
+
+    IMG_FileListTable : function(data) {
+        $("#img_file_list").empty();
+        let strHtml = "";
+        let resultList = data ;
+        if(resultList && resultList.length > 0) {
+            for(let i=0; i<resultList.length; i++) {
+                let retObj = resultList[i];
+                strHtml = strHtml + "<li class='ulist_w_33'>";
+                strHtml = strHtml + "   " +
+                    "<img class='itemImg' src='/fileUpDownApi/display?filename=" + "" +  retObj.fileSaveNm + "' style='width:100px;height:100px' />";
                 strHtml = strHtml + "</li>";
             }
         }

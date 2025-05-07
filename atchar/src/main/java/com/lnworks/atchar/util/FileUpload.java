@@ -23,12 +23,14 @@ public class FileUpload {
     public static BaseMap uploadFileMap(MultipartHttpServletRequest multiRequest, String fileStorePath, String path) {
         String filePath = null;
         BaseMap resultMap = new BaseMap();
+        String saveFileNm = DateTimeUtil.getNowDateTime();
+        String subDir = saveFileNm.substring(0, 8);
 
         try {
             String fileStorePathStr = fileStorePath;
 
             if (path != null && !path.equals("")) {
-                fileStorePathStr += File.separator + path;
+                fileStorePathStr += File.separator + path + File.separator + subDir;
             }
 
             File uploadPath = new File(fileStorePathStr);
@@ -56,7 +58,7 @@ public class FileUpload {
 
                 int index = orginFileName.lastIndexOf(".");
                 String fileExt = orginFileName.substring(index + 1);
-                String newName = DateTimeUtil.getNowDateTime() + String.format("%03d", fileIdx);
+                String newName = saveFileNm + String.format("%03d", fileIdx) + "." + fileExt;;
                 long _size = mFile.getSize();
 
                 if (!"".equals(orginFileName)) {
@@ -112,7 +114,9 @@ public class FileUpload {
             if (path != null && !path.equals("")) {
                 fileStorePathStr += File.separator + path;
             }
-            String filePath = fileStorePathStr + File.separator + fileName;
+
+            String subDir = fileName.substring(0, 8);
+            String filePath = fileStorePathStr + File.separator + subDir + File.separator + fileName;
             File file = new File(filePath);
             if (file.exists() && file.canWrite()) {
                 file.delete();

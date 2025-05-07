@@ -60,7 +60,7 @@ let Ebmng = {
     },
 
     downloadExcel : function () {
-        const url = '/incom/etcItemApi/dataListExcel';
+        const url = '/incom/carItemApi/dataListExcel';
         let f = document.dataFrm;
         f.action = url;
         f.submit();
@@ -80,7 +80,7 @@ let Ebmng = {
         }
         let incomcd = gv_logData[key].incomcd;
         $.ajax({
-            url: '/incom/etcItemApi/dataViewOpt',
+            url: '/incom/carItemApi/dataViewOpt',
             type: 'post',
             data: {
                 incomcd : incomcd,
@@ -173,7 +173,7 @@ let Ebmng = {
 
         let allyn = "";
         $.ajax({
-            url: '/incom/etcItemApi/myDataList',
+            url: '/incom/carItemApi/myDataList',
             type: 'post',
             data: {
                 allyn : allyn,
@@ -371,7 +371,7 @@ let Ebmng = {
         }
 
         $.ajax({
-            url: '/incom/etcItemApi/dataEdit',
+            url: '/incom/carItemApi/dataEdit',
             type: 'post',
             data: param,
             success: function (data) {
@@ -397,7 +397,7 @@ let Ebmng = {
         let param = $("form[name=dataFrm]").serialize();
         let message = "삭제 되었습니다.";
         $.ajax({
-            url: '/incom/etcItemApi/dataDelete',
+            url: '/incom/carItemApi/dataDelete',
             type: 'post',
             data: param,
             success: function (data) {

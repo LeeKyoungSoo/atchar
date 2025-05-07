@@ -18,11 +18,14 @@
                     <ons-list-item onclick="fn.pageurl('/mobile/guest/main')" tappable>
                         Home
                     </ons-list-item>
-                    <ons-list-item onclick="fn.pageurl('/mobile/guest/main?active=info')" tappable>
+                    <ons-list-item onclick="fn.pageurl('/mobile/guest/info?active=info')" tappable>
                         아부품이란?
                     </ons-list-item>
                     <ons-list-item onclick="fn.pageurl('/mobile/member/item')" tappable>
                         바디품목검색
+                    </ons-list-item>
+                    <ons-list-item onclick="fn.pageurl('/mobile/member/caritem')" tappable>
+                        카센터품목검색
                     </ons-list-item>
                     <ons-list-item onclick="fn.pageurl('/mobile/member/etcitem')" tappable>
                         기타품목검색
@@ -30,6 +33,9 @@
                     <th:block th:if="${session['userLv']} == 1 ">
                         <ons-list-item onclick="fn.userLvUpInfo()" tappable>
                             바디품목등록
+                        </ons-list-item>
+                        <ons-list-item onclick="fn.userLvUpInfo()" tappable>
+                            카센터품목등록
                         </ons-list-item>
                         <ons-list-item onclick="fn.userLvUpInfo()" tappable>
                             기타품목등록
@@ -41,6 +47,9 @@
                     <th:block th:if="${session['userLv']} == 2 ">
                         <ons-list-item onclick="fn.pageurl('/mobile/member/manage')" tappable>
                             바디품목등록
+                        </ons-list-item>
+                        <ons-list-item onclick="fn.pageurl('/mobile/member/carmanage')" tappable>
+                            카센터품목등록
                         </ons-list-item>
                         <ons-list-item onclick="fn.pageurl('/mobile/member/eb_manage')" tappable>
                             기타품목등록
